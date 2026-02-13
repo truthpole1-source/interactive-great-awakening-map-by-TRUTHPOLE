@@ -1,26 +1,23 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Routes, Route, useNavigate, useParams } from 'react-router-dom';
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
-
 import { DEFAULT_NODES, type Node } from './data/nodes';
 import { DEFAULT_EDGES, type Edge } from './data/edges';
-
 import { InfoPanel } from './components/InfoPanel';
 import { SearchSheet } from './components/SearchSheet';
 import { ResumeSheet } from './components/ResumeSheet';
-
 import { loadReadSet, markRead, clearRead } from './utils/readState';
 import {
   loadEdgesFromLocalStorage,
   saveEdgesToLocalStorage,
   exportGraph,
-  importGraphFile,
+  importGraphFile
 } from './utils/graphIO';
 import { computeCredibilityScore } from './utils/credibility';
 import { loadLastVisited, saveLastVisited } from './utils/lastVisited';
 import { loadCrumbs, pushCrumb } from './utils/breadcrumbs';
 
-// matches public/map.jpg
+// Matches the dimensions of public/map.jpg (Great Awakening Map 2022)
 const CONTENT_W = 1583;
 const CONTENT_H = 2048;
 
@@ -49,14 +46,56 @@ function Home() {
   const [crumbs, setCrumbs] = useState<string[]>(() => loadCrumbs());
   const [resumeId, setResumeId] = useState<string | null>(() => loadLastVisited());
   const resumeNode = useMemo(
-    () => (resumeId ? nodes.find((n) => n.id === resumeId) || null : null),
+    () => (resumeId ? nodes.find(n => n.id === resumeId) || null : null),
     [resumeId, nodes]
   );
-
   const [showResume, setShowResume] = useState(true);
   const [chipReady, setChipReady] = useState(true);
 
-  // Auto-hide resume on mobile after 6s
+  // --- VIEWPORT / FIT SCALE (FIX) ---
+  const wrapRef = useRef<HTMLDivElement | null>(null);
+  const [wrapSize, setWrapSize] = useState<{ w: number; h: number }>({
+    w: typeof window !== 'undefined' ? window.innerWidth : 1200,
+    h: typeof window !== 'undefined' ? window.innerHeight : 800
+  });
+
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+
+    const update = () => {
+      const r = el.getBoundingClientRect();
+      setWrapSize({ w: Math.max(1, r.width), h: Math.max(1, r.height) });
+    };
+
+    update();
+
+    const ro = new ResizeObserver(() => update());
+    ro.observe(el);
+
+    window.addEventListener('resize', update);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', update);
+    };
+  }, []);
+
+  // ✅ Fit-to-screen but more zoomed-in on mobile
+  const fitScale = useMemo(() => {
+    const sx = wrapSize.w / CONTENT_W;
+    const sy = wrapSize.h / CONTENT_H;
+
+    const base = Math.min(sx, sy);
+    const isMobile = wrapSize.w < 900;
+
+    // 🔥 Mobile: start closer / more usable
+    const adjusted = isMobile ? base * 1.8 : base;
+
+    // clamp
+    return Math.max(0.25, Math.min(2, adjusted));
+  }, [wrapSize]);
+
+  // auto-hide resume on mobile after 6s
   useEffect(() => {
     if (!resumeNode) return;
     const isMobile = window.matchMedia('(max-width: 900px)').matches;
@@ -65,44 +104,7 @@ function Home() {
       setChipReady(false);
       setShowResume(false);
       window.setTimeout(() => setChipReady(true), 180);
-    }, 6000);
-    return () => window.clearTimeout(t);
-  }, [resumeNode]);
-
-  const filtered = useMemo(() => {
-    let list = nodes;
-    if (readFilter === 'unread') list = list.filter((n) => !readSet.has(n.id));
-    if (readFilter === 'read') list = list.filter((n) => readSet.has(n.id));
-    const q = query.trim().toLowerCase();
-    if (!q) return list;
-    return list.filter(
-      (n) =>
-        n.title.toLowerCase().includes(q) ||
-        (n.tags || []).some((t) => t.toLowerCase().includes(q)) ||
-        n.category.toLowerCase().includes(q)
-    );
-  }, [nodes, readFilter, readSet, query]);
-
-  const readCount = useMemo(
-    () => nodes.reduce((a, n) => a + (readSet.has(n.id) ? 1 : 0), 0),
-    [nodes, readSet]
-  );
-  const unreadCount = useMemo(() => nodes.length - readCount, [nodes.length, readCount]);
-  const progressPct = useMemo(
-    () => (nodes.length ? Math.round((readCount / nodes.length) * 100) : 0),
-    [readCount, nodes.length]
-  );
-
-  const focusNode = useCallback(
-    (n: Node, openPanel = true) => {
-      setSelected(n);
-      setReadSet((prev) => markRead(prev, n.id));
-      saveLastVisited(n.id);
-      setResumeId(n.id);
-      setCrumbs(pushCrumb(n.id));
-      if (openPanel) navigate(`/topic/${n.id}`);
-    },
-    [navigate]
+    }, 6000    [navigate]
   );
 
   const clearSelection = useCallback(() => {
