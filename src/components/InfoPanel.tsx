@@ -1,43 +1,142 @@
-import type { Node } from '../data/nodes';
-import type { Edge } from '../data/edges';
+import { useMemo } from "react";
+import type { Node } from "../data/nodes";
+import type { Edge } from "../data/edges";
 
-type Props={node:Node;edges:Edge[];cred?:{score:number;label:string;relatedCount:number};onClose:()=>void};
+export function InfoPanel({
+  node,
+  edges,
+  cred,
+  onClose,
+}: {
+  node: Node;
+  edges: Edge[];
+  cred?: any;
+  onClose: () => void;
+}) {
+  const connections = useMemo(() => {
+    const id = node.id;
+    return edges
+      .filter((e) => e.from === id || e.to === id)
+      .map((e) => {
+        const other = e.from === id ? e.to : e.from;
+        return {
+          other,
+          type: e.type || "overlap",
+        };
+      });
+  }, [node.id, edges]);
 
-export function InfoPanel({node,edges,cred,onClose}:Props){
-  const rel=edges.filter(e=>e.from===node.id||e.to===node.id);
   return (
-    <div className='panel' role='dialog' aria-label='Topic info'>
-      <div className='panelHead'>
-        <div>
-          <div className='panelTitle'>{node.title}</div>
-          <div className='panelSub'>{node.category}</div>
+    <>
+      {/* Backdrop (tap to close) */}
+      <div
+        onClick={onClose}
+        style={{
+          position: "fixed",
+          inset: 0,
+          background: "rgba(0,0,0,.35)",
+          zIndex: 9998,
+        }}
+      />
+
+      {/* Panel */}
+      <div
+        style={{
+          position: "fixed",
+          left: 10,
+          right: 10,
+          bottom: 10,
+          zIndex: 9999,
+
+          maxHeight: "55vh",
+          overflow: "auto",
+
+          background: "rgba(10,12,16,.95)",
+          border: "1px solid rgba(255,255,255,.12)",
+          borderRadius: 14,
+          boxShadow: "0 20px 60px rgba(0,0,0,.45)",
+          padding: 12,
+        }}
+      >
+        <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+          <button
+            onClick={onClose}
+            aria-label="Close"
+            style={{
+              width: 38,
+              height: 38,
+              borderRadius: 12,
+              border: "1px solid rgba(255,255,255,.12)",
+              background: "rgba(255,255,255,.06)",
+              color: "rgba(255,255,255,.9)",
+              fontSize: 18,
+              lineHeight: "38px",
+            }}
+          >
+            ×
+          </button>
+
+          <div style={{ minWidth: 0 }}>
+            <div style={{ fontWeight: 800, fontSize: 18, lineHeight: 1.2 }}>
+              {node.title}
+            </div>
+            <div style={{ opacity: 0.7, fontSize: 12, marginTop: 2 }}>
+              {node.category}
+            </div>
+          </div>
         </div>
-        <button className='panelClose' onClick={onClose} aria-label='Close'>✕</button>
-      </div>
-      {cred?(
-        <div className='credBox'>
-          <div className='credTop'><div className='credLabel'>{cred.label}</div><div className='credPct'>{Math.round(cred.score)}%</div></div>
-          <div className='credBar'><div className='credFill' style={{width:`${cred.score}%`}} /></div>
-          <div className='credSub'>Based on link types, {cred.relatedCount} connections</div>
+
+        <div style={{ marginTop: 10, opacity: 0.9, fontSize: 13 }}>
+          {cred?.label ? (
+            <>
+              <div style={{ fontWeight: 700 }}>{cred.label}</div>
+              {cred?.pct != null ? (
+                <div style={{ opacity: 0.8 }}>{cred.pct}%</div>
+              ) : null}
+              {cred?.summary ? <div style={{ marginTop: 6 }}>{cred.summary}</div> : null}
+            </>
+          ) : null}
         </div>
-      ):null}
-      <div className='panelBody'>
-        <div className='panelP'>{node.summary}</div>
-        <div className='panelH'>Claims</div>
-        <ul className='panelList'>{node.claims.map((c,i)=><li key={i}>{c}</li>)}</ul>
-        <div className='panelH'>Counterpoints</div>
-        <ul className='panelList'>{node.counterpoints.map((c,i)=><li key={i}>{c}</li>)}</ul>
-        {rel.length?(
+
+        {node?.claims?.length ? (
           <>
-            <div className='panelH'>Connections</div>
-            <ul className='panelList'>
-              {rel.map(e=>(
-                <li key={e.id}>{e.from} → {e.to}{e.label?` - ${e.label}`:''} ({e.type||'overlap'})</li>
+            <div style={{ marginTop: 14, fontWeight: 800 }}>Claims</div>
+            <ul style={{ marginTop: 8, paddingLeft: 18 }}>
+              {node.claims.map((c: string, i: number) => (
+                <li key={i} style={{ marginBottom: 6, opacity: 0.92 }}>
+                  {c}
+                </li>
               ))}
             </ul>
           </>
-        ):null}
+        ) : null}
+
+        {node?.counterpoints?.length ? (
+          <>
+            <div style={{ marginTop: 12, fontWeight: 800 }}>Counterpoints</div>
+            <ul style={{ marginTop: 8, paddingLeft: 18 }}>
+              {node.counterpoints.map((c: string, i: number) => (
+                <li key={i} style={{ marginBottom: 6, opacity: 0.92 }}>
+                  {c}
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : null}
+
+        <div style={{ marginTop: 12, fontWeight: 800 }}>Connections</div>
+        <ul style={{ marginTop: 8, paddingLeft: 18 }}>
+          {connections.length ? (
+            connections.map((c, i) => (
+              <li key={i} style={{ marginBottom: 6, opacity: 0.92 }}>
+                {node.id} → {c.other} ({c.type})
+              </li>
+            ))
+          ) : (
+            <li style={{ opacity: 0.7 }}>No connections</li>
+          )}
+        </ul>
       </div>
-    </div>
+    </>
   );
 }
