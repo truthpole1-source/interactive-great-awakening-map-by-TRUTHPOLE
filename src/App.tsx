@@ -11,7 +11,6 @@ import { DEFAULT_EDGES, type Edge } from "./data/edges";
 
 import { InfoPanel } from "./components/InfoPanel";
 import { SearchSheet } from "./components/SearchSheet";
-import { ResumeSheet } from "./components/ResumeSheet";
 
 import { loadReadSet, markRead, clearRead } from "./utils/readState";
 import {
@@ -31,7 +30,7 @@ const CONTENT_W = 1583;
 const CONTENT_H = 2048;
 
 // Layout heights (CSS uses the same)
-const TOPBAR_H = 168; // mobile-ish average; desktop will naturally fit
+const TOPBAR_H = 168;
 const DOCK_H = 86;
 
 function haptic(ms = 12) {
@@ -50,6 +49,11 @@ function useViewport() {
   return vp;
 }
 
+/**
+ * Ritual splash (phase 1 vibe)
+ * - Removes "Enter the Grid"
+ * - Uses ritual language + Truthpole logo
+ */
 function Splash({ onEnter }: { onEnter: () => void }) {
   const [fade, setFade] = useState(false);
 
@@ -68,8 +72,9 @@ function Splash({ onEnter }: { onEnter: () => void }) {
           alt="Truthpole"
           draggable={false}
         />
-        <div className="ritualTitle">Great Awakening Map</div>
-        <div className="ritualSub">Tap to enter the grid</div>
+
+        <div className="ritualTitle">Ritual Entry</div>
+        <div className="ritualSub">Initiate the Great Awakening Map</div>
 
         <button
           className="ritualBtn"
@@ -78,7 +83,114 @@ function Splash({ onEnter }: { onEnter: () => void }) {
             setFade(true);
           }}
         >
-          ENTER THE GRID
+          BEGIN THE RITUAL
+        </button>
+
+        <div className="ritualFine">Tap to proceed.</div>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * A clean “Resume last” toast/chip (replaces the unstyled Resume/Remote Viewing block)
+ * Uses inline styles so it never looks broken even if CSS misses.
+ */
+function ResumeToast({
+  title,
+  onResume,
+  onDismiss,
+}: {
+  title: string;
+  onResume: () => void;
+  onDismiss: () => void;
+}) {
+  return (
+    <div
+      style={{
+        position: "fixed",
+        left: 14,
+        bottom: DOCK_H + 14,
+        zIndex: 60,
+        maxWidth: "min(520px, calc(100vw - 28px))",
+        borderRadius: 18,
+        padding: 12,
+        background: "rgba(20,20,24,0.72)",
+        backdropFilter: "blur(14px)",
+        border: "1px solid rgba(255,255,255,0.10)",
+        boxShadow: "0 14px 50px rgba(0,0,0,0.45)",
+        color: "rgba(255,255,255,0.92)",
+      }}
+      role="region"
+      aria-label="Resume last visited"
+    >
+      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+        <img
+          src="/truthpole-logo.jpg"
+          alt=""
+          style={{
+            width: 34,
+            height: 34,
+            borderRadius: 12,
+            objectFit: "cover",
+            border: "1px solid rgba(255,255,255,0.12)",
+          }}
+        />
+
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ fontSize: 12, opacity: 0.75, marginBottom: 2 }}>
+            Resume last
+          </div>
+          <div
+            style={{
+              fontSize: 14,
+              fontWeight: 650,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+            title={title}
+          >
+            {title}
+          </div>
+        </div>
+
+        <button
+          onClick={() => {
+            haptic(10);
+            onResume();
+          }}
+          style={{
+            border: "1px solid rgba(255,255,255,0.14)",
+            background: "rgba(255,255,255,0.06)",
+            color: "rgba(255,255,255,0.92)",
+            borderRadius: 14,
+            padding: "10px 12px",
+            fontWeight: 700,
+          }}
+        >
+          Resume
+        </button>
+
+        <button
+          onClick={() => {
+            haptic(8);
+            onDismiss();
+          }}
+          aria-label="Dismiss"
+          title="Dismiss"
+          style={{
+            border: "1px solid rgba(255,255,255,0.10)",
+            background: "transparent",
+            color: "rgba(255,255,255,0.70)",
+            borderRadius: 14,
+            width: 42,
+            height: 42,
+            fontSize: 18,
+            lineHeight: "42px",
+          }}
+        >
+          ×
         </button>
       </div>
     </div>
@@ -111,19 +223,15 @@ function Home() {
     [resumeId, nodes]
   );
 
-  const [showResume, setShowResume] = useState(true);
-  const [chipReady, setChipReady] = useState(true);
+  // Clean resume toast control (instead of ResumeSheet)
+  const [showResumeToast, setShowResumeToast] = useState(true);
 
-  // Auto-hide resume on mobile after 6s
+  // Auto-hide resume toast on mobile after 6s
   useEffect(() => {
     if (!resumeNode) return;
     const isMobile = window.matchMedia("(max-width: 900px)").matches;
     if (!isMobile) return;
-    const t = window.setTimeout(() => {
-      setChipReady(false);
-      setShowResume(false);
-      window.setTimeout(() => setChipReady(true), 180);
-    }, 6000);
+    const t = window.setTimeout(() => setShowResumeToast(false), 6000);
     return () => window.clearTimeout(t);
   }, [resumeNode]);
 
@@ -155,16 +263,14 @@ function Home() {
   const [t, setT] = useState({ scale: 1, positionX: 0, positionY: 0 });
 
   const viewCenter = useMemo(() => {
-    // Center of current view in content coords
     const left = -t.positionX / t.scale;
     const top = -t.positionY / t.scale;
 
-    // stage height subtracts the UI
     const stageW = vp.w;
     const stageH = vp.h - TOPBAR_H - DOCK_H;
 
-    const cx = left + (stageW / 2) / t.scale;
-    const cy = top + (stageH / 2) / t.scale;
+    const cx = left + stageW / 2 / t.scale;
+    const cy = top + stageH / 2 / t.scale;
     return { cx, cy };
   }, [t, vp]);
 
@@ -251,7 +357,7 @@ function Home() {
     api.setTransform(x, y, scale, 250, "easeOut");
   };
 
-  // Center once on mount (nice for mobile)
+  // Center once on mount
   useEffect(() => {
     const t = window.setTimeout(() => centerToFit(), 120);
     return () => window.clearTimeout(t);
@@ -355,31 +461,13 @@ function Home() {
         ) : null}
       </header>
 
-      {/* Resume */}
-      {resumeNode ? (
-        <ResumeSheet
-          open={showResume}
+      {/* Clean Resume Toast */}
+      {resumeNode && showResumeToast ? (
+        <ResumeToast
           title={resumeNode.title}
-          onJump={() => { haptic(10); focusNode(resumeNode, true); }}
-          onRequestClose={() => {
-            haptic(8);
-            setChipReady(false);
-            setShowResume(false);
-            window.setTimeout(() => setChipReady(true), 180);
-          }}
+          onResume={() => focusNode(resumeNode, true)}
+          onDismiss={() => setShowResumeToast(false)}
         />
-      ) : null}
-
-      {!showResume && chipReady && resumeNode ? (
-        <button
-          className="resumeChip"
-          onClick={() => { haptic(10); setShowResume(true); }}
-          aria-label="Show resume"
-          title={`Resume: ${resumeNode.title}`}
-        >
-          <span className="resumeChipK">Resume</span>
-          <span className="resumeChipT">{resumeNode.title}</span>
-        </button>
       ) : null}
 
       {/* MAP */}
@@ -508,15 +596,7 @@ function Home() {
         <Route path="/" element={null} />
         <Route
           path="/topic/:id"
-          element={
-            <TopicRoute
-              nodes={nodes}
-              edges={edges}
-              onSelect={setSelected}
-              selected={selected}
-              onClose={clearSelection}
-            />
-          }
+          element={<TopicRoute nodes={nodes} onSelect={setSelected} onClose={clearSelection} />}
         />
       </Routes>
 
@@ -527,15 +607,16 @@ function Home() {
   );
 }
 
+/**
+ * ✅ Fixed typing: only accept what we actually use
+ */
 function TopicRoute({
   nodes,
   onSelect,
   onClose,
 }: {
   nodes: Node[];
-  edges: Edge[];
   onSelect: (n: Node | null) => void;
-  selected: Node | null;
   onClose: () => void;
 }) {
   const { id } = useParams();
@@ -545,7 +626,7 @@ function TopicRoute({
     const n = nodes.find((x) => x.id === id) || null;
     onSelect(n);
     if (!n) onClose();
-  }, [id]);
+  }, [id, nodes, onSelect, onClose]);
 
   return null;
 }
