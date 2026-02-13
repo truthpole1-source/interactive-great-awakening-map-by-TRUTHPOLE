@@ -1,0 +1,2302 @@
+{
+  "generated_at": "2026-02-12T22:53:26.082970Z",
+  "source": "Manual extraction + common nodes visible on Great Awakening Map (image-based, not exhaustive)",
+  "count": 203,
+  "nodes": [
+    {
+      "id": "great-awakening",
+      "title": "Great Awakening",
+      "category": "meta",
+      "aliases": [
+        "The Great Awakening"
+      ],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "great-solar-flash",
+      "title": "Great Solar Flash",
+      "category": "cosmic_event",
+      "aliases": [
+        "Solar Flash"
+      ],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "collective-consciousness",
+      "title": "Collective Consciousness",
+      "category": "concept",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "consciousness-renaissance",
+      "title": "Consciousness Renaissance",
+      "category": "concept",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "mystery-of-universal-creation",
+      "title": "Mystery of Universal Creation",
+      "category": "concept",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "return-to-source",
+      "title": "Return to Source",
+      "category": "concept",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "escape-samsara",
+      "title": "Escape Samsara",
+      "category": "spiritual",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "bardo",
+      "title": "Bardo",
+      "category": "spiritual",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "tibetan-buddhism",
+      "title": "Tibetan Buddhism",
+      "category": "spiritual",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "rainbow-body",
+      "title": "Rainbow Body",
+      "category": "spiritual",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "meditation",
+      "title": "Meditation",
+      "category": "practice",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "sacred-geometry",
+      "title": "Sacred Geometry",
+      "category": "symbolism",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "psychedelic-renaissance",
+      "title": "Psychedelic Renaissance",
+      "category": "culture",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "dmt",
+      "title": "DMT",
+      "category": "substance",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "psilocybin-mushrooms",
+      "title": "Psilocybin Mushrooms",
+      "category": "substance",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "terence-mckenna",
+      "title": "Terence McKenna",
+      "category": "person",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "law-of-one",
+      "title": "Law of One",
+      "category": "belief_system",
+      "aliases": [
+        "Ra Material"
+      ],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "bashar",
+      "title": "Bashar",
+      "category": "person_or_source",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "channeling",
+      "title": "Channeling",
+      "category": "practice",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "akashic-records",
+      "title": "Akashic Records",
+      "category": "belief_system",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "lucid-dreaming",
+      "title": "Lucid Dreaming",
+      "category": "practice",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "remote-viewing",
+      "title": "Remote Viewing",
+      "category": "practice",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "project-stargate",
+      "title": "Project Stargate",
+      "category": "program",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "cia-remote-viewing",
+      "title": "CIA Remote Viewing",
+      "category": "program",
+      "aliases": [
+        "Stargate Program"
+      ],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "joe-mcmoneagle",
+      "title": "Joe McMoneagle",
+      "category": "person",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "psychic-abilities",
+      "title": "Psychic Abilities",
+      "category": "concept",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "psionics",
+      "title": "Psionics",
+      "category": "concept",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "higher-mind",
+      "title": "Higher Mind",
+      "category": "concept",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "pineal-gland",
+      "title": "Pineal Gland",
+      "category": "concept",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "chakras",
+      "title": "Chakras",
+      "category": "concept",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "kundalini",
+      "title": "Kundalini",
+      "category": "concept",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "breathwork",
+      "title": "Breathwork",
+      "category": "practice",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "ufo",
+      "title": "UFO",
+      "category": "phenomenon",
+      "aliases": [
+        "UAP"
+      ],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "nhi",
+      "title": "NHI",
+      "category": "phenomenon",
+      "aliases": [
+        "Non-Human Intelligence"
+      ],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "ancient-aliens",
+      "title": "Ancient Aliens",
+      "category": "belief_system",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "anunnaki",
+      "title": "Anunnaki",
+      "category": "entity_group",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "nephilim",
+      "title": "Nephilim",
+      "category": "entity_group",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "reptilians",
+      "title": "Reptilians",
+      "category": "entity_group",
+      "aliases": [
+        "Reptilian Alliance"
+      ],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "draco",
+      "title": "Draco",
+      "category": "entity_group",
+      "aliases": [
+        "Draco Reptilian"
+      ],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "greys",
+      "title": "Greys",
+      "category": "entity_group",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "nordics",
+      "title": "Nordics",
+      "category": "entity_group",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "mantis-beings",
+      "title": "Mantis Beings",
+      "category": "entity_group",
+      "aliases": [
+        "Mantids"
+      ],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "pleiadians",
+      "title": "Pleiadians",
+      "category": "entity_group",
+      "aliases": [
+        "Pleiadian Guidance"
+      ],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "arcturians",
+      "title": "Arcturians",
+      "category": "entity_group",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "orion-group",
+      "title": "Orion Group",
+      "category": "entity_group",
+      "aliases": [
+        "Orion Syndicate"
+      ],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "andromedans",
+      "title": "Andromedans",
+      "category": "entity_group",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "blue-avians",
+      "title": "Blue Avians",
+      "category": "entity_group",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "galactic-federation",
+      "title": "Galactic Federation",
+      "category": "entity_group",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "galactic-federation-of-worlds",
+      "title": "Galactic Federation of Worlds",
+      "category": "entity_group",
+      "aliases": [
+        "GFW"
+      ],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "council-of-saturn",
+      "title": "Council of Saturn",
+      "category": "entity_group",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "saturn",
+      "title": "Saturn",
+      "category": "celestial_body",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "ringmakers-of-saturn",
+      "title": "Ringmakers of Saturn",
+      "category": "claim",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "nibiru",
+      "title": "Nibiru",
+      "category": "celestial_body",
+      "aliases": [
+        "Planet X"
+      ],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "comet-ison",
+      "title": "Comet ISON",
+      "category": "celestial_body",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "venus",
+      "title": "Venus",
+      "category": "celestial_body",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "mars",
+      "title": "Mars",
+      "category": "celestial_body",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "moon",
+      "title": "Moon",
+      "category": "celestial_body",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "antarctica",
+      "title": "Antarctica",
+      "category": "location",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "inner-earth",
+      "title": "Inner Earth",
+      "category": "belief_system",
+      "aliases": [
+        "Inner Earth Civilizations"
+      ],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "underground-bases",
+      "title": "Underground Bases",
+      "category": "claim",
+      "aliases": [
+        "Underground Base"
+      ],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "underwater-bases",
+      "title": "Underwater Bases",
+      "category": "claim",
+      "aliases": [
+        "USO Bases",
+        "Oceanic Bases"
+      ],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "uso",
+      "title": "USO",
+      "category": "phenomenon",
+      "aliases": [
+        "Unidentified Submerged Object"
+      ],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "crash-retrieval",
+      "title": "Crash Retrieval",
+      "category": "program_or_claim",
+      "aliases": [
+        "UFO Crash Retrieval"
+      ],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "reverse-engineering",
+      "title": "Reverse Engineering",
+      "category": "program_or_claim",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "black-projects",
+      "title": "Black Projects",
+      "category": "program_or_claim",
+      "aliases": [
+        "Black Budget"
+      ],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "secret-space-program",
+      "title": "Secret Space Program",
+      "category": "program_or_claim",
+      "aliases": [
+        "SSP"
+      ],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "military-industrial-complex",
+      "title": "Military Industrial Complex",
+      "category": "institution",
+      "aliases": [
+        "MIC"
+      ],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "nasa-coverups",
+      "title": "NASA Coverups",
+      "category": "claim",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "area-51",
+      "title": "Area 51",
+      "category": "location",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "majestic-12",
+      "title": "Majestic 12",
+      "category": "claim",
+      "aliases": [
+        "MJ-12"
+      ],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "blue-book",
+      "title": "Blue Book",
+      "category": "program",
+      "aliases": [
+        "Project Blue Book"
+      ],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "roswell",
+      "title": "Roswell",
+      "category": "event",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "vandenberg-1964-abduction-claim",
+      "title": "Vandenberg 1964 Abduction Claim",
+      "category": "case",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "medell-n-ufo-2020",
+      "title": "Medellín UFO (2020)",
+      "category": "case",
+      "aliases": [
+        "Medellin UFO"
+      ],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "sierra-nevada-spain-ufo",
+      "title": "Sierra Nevada Spain UFO",
+      "category": "case",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "el-paso-airport-flight-halt",
+      "title": "El Paso Airport Flight Halt",
+      "category": "event_or_claim",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "faa-temporary-flight-restriction",
+      "title": "FAA Temporary Flight Restriction",
+      "category": "policy_or_event",
+      "aliases": [
+        "TFR"
+      ],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "cern",
+      "title": "CERN",
+      "category": "institution",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "cern-ritual-video-2016",
+      "title": "CERN Ritual Video (2016)",
+      "category": "case_or_claim",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "cia",
+      "title": "CIA",
+      "category": "institution",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "nsa",
+      "title": "NSA",
+      "category": "institution",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "fbi",
+      "title": "FBI",
+      "category": "institution",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "dod",
+      "title": "DoD",
+      "category": "institution",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "declassification",
+      "title": "Declassification",
+      "category": "policy",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "jfk-files",
+      "title": "JFK Files",
+      "category": "document_set",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "epstein-files",
+      "title": "Epstein Files",
+      "category": "document_set",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "hillary-clinton-email-leaks",
+      "title": "Hillary Clinton Email Leaks",
+      "category": "document_set",
+      "aliases": [
+        "WikiLeaks Clinton Emails"
+      ],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "gilgamesh-email-reference",
+      "title": "Gilgamesh Email Reference",
+      "category": "claim_or_document",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "ancient-mysteries",
+      "title": "Ancient Mysteries",
+      "category": "topic",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "whistleblowers",
+      "title": "Whistleblowers",
+      "category": "topic",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "disclosure",
+      "title": "Disclosure",
+      "category": "topic",
+      "aliases": [
+        "UAP Disclosure"
+      ],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "lockheed-martin",
+      "title": "Lockheed Martin",
+      "category": "organization",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "raytheon",
+      "title": "Raytheon",
+      "category": "organization",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "northrop-grumman",
+      "title": "Northrop Grumman",
+      "category": "organization",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "boeing",
+      "title": "Boeing",
+      "category": "organization",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "trw",
+      "title": "TRW",
+      "category": "organization",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "douglas-aircraft",
+      "title": "Douglas Aircraft",
+      "category": "organization",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "general-dynamics",
+      "title": "General Dynamics",
+      "category": "organization",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "skunk-works",
+      "title": "Skunk Works",
+      "category": "organization",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "darpa",
+      "title": "DARPA",
+      "category": "organization",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "deep-state",
+      "title": "Deep State",
+      "category": "belief_system",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "cabal",
+      "title": "Cabal",
+      "category": "belief_system",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "illuminati",
+      "title": "Illuminati",
+      "category": "belief_system",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "freemasons",
+      "title": "Freemasons",
+      "category": "organization_or_claim",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "jesuits",
+      "title": "Jesuits",
+      "category": "organization_or_claim",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "vatican",
+      "title": "Vatican",
+      "category": "institution_or_claim",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "project-paperclip",
+      "title": "Project Paperclip",
+      "category": "historical_program",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "operation-highjump",
+      "title": "Operation Highjump",
+      "category": "historical_program",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "mkultra",
+      "title": "MKUltra",
+      "category": "program",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "philadelphia-experiment",
+      "title": "Philadelphia Experiment",
+      "category": "claim",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "montauk-project",
+      "title": "Montauk Project",
+      "category": "claim",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "chemtrails",
+      "title": "Chemtrails",
+      "category": "claim",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "haarp",
+      "title": "HAARP",
+      "category": "program_or_claim",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "tesla-free-energy",
+      "title": "Tesla Free Energy",
+      "category": "claim_or_topic",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "zero-point-energy",
+      "title": "Zero Point Energy",
+      "category": "claim_or_topic",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "antigravity",
+      "title": "Antigravity",
+      "category": "claim_or_topic",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "time-travel",
+      "title": "Time Travel",
+      "category": "claim_or_topic",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "simulation-theory",
+      "title": "Simulation Theory",
+      "category": "concept",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "matrix-escape",
+      "title": "Matrix Escape",
+      "category": "belief_system",
+      "aliases": [
+        "Escape the Matrix"
+      ],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "ascension",
+      "title": "Ascension",
+      "category": "concept",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "5d-earth",
+      "title": "5D Earth",
+      "category": "belief_system",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "new-earth",
+      "title": "New Earth",
+      "category": "belief_system",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "mass-meditation",
+      "title": "Mass Meditation",
+      "category": "practice",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "energy-healing",
+      "title": "Energy Healing",
+      "category": "practice",
+      "aliases": [
+        "Sound Healing",
+        "Frequency Healing"
+      ],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "crystals",
+      "title": "Crystals",
+      "category": "practice_or_belief",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "entheogens",
+      "title": "Entheogens",
+      "category": "substance_category",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "transhumanism",
+      "title": "Transhumanism",
+      "category": "topic",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "ai-signal",
+      "title": "AI Signal",
+      "category": "topic",
+      "aliases": [
+        "Artificial Intelligence Signal"
+      ],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "ancient-artificial-intelligence",
+      "title": "Ancient Artificial Intelligence",
+      "category": "claim",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "hyperdimensional-hexagon-saturn",
+      "title": "Hyperdimensional Hexagon (Saturn)",
+      "category": "claim",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "rabbit-hole",
+      "title": "Rabbit Hole",
+      "category": "metaphor",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "off-planet-human-slave-trade",
+      "title": "Off-Planet Human Slave Trade",
+      "category": "claim",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "solar-system-climate-change",
+      "title": "Solar System Climate Change",
+      "category": "topic_or_claim",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "brics-alliance",
+      "title": "BRICS Alliance",
+      "category": "geopolitics",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "cryptocurrency",
+      "title": "Cryptocurrency",
+      "category": "topic",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "tribunals",
+      "title": "Tribunals",
+      "category": "claim_or_topic",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "qanon",
+      "title": "QAnon",
+      "category": "movement",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "white-hats",
+      "title": "White Hats",
+      "category": "claim_or_group",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "patriots",
+      "title": "Patriots",
+      "category": "claim_or_group",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "nordic-aliens",
+      "title": "Nordic Aliens",
+      "category": "entity_group",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "reptilian-bloodlines",
+      "title": "Reptilian Bloodlines",
+      "category": "claim",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "rockefeller-bloodline",
+      "title": "Rockefeller Bloodline",
+      "category": "claim",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "rothschild-bloodline",
+      "title": "Rothschild Bloodline",
+      "category": "claim",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "disney-bloodline",
+      "title": "Disney Bloodline",
+      "category": "claim",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "kennedy-bloodline",
+      "title": "Kennedy Bloodline",
+      "category": "claim",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "secret-space-program-alliance",
+      "title": "Secret Space Program Alliance",
+      "category": "claim",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "global-galactic-league-of-nations",
+      "title": "Global Galactic League of Nations",
+      "category": "claim",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "sphere-being-alliance",
+      "title": "Sphere Being Alliance",
+      "category": "claim",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "blue-orb",
+      "title": "Blue Orb",
+      "category": "phenomenon",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "orbs",
+      "title": "Orbs",
+      "category": "phenomenon",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "crop-circles",
+      "title": "Crop Circles",
+      "category": "phenomenon",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "stone-circles",
+      "title": "Stone Circles",
+      "category": "ancient_site",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "pyramids",
+      "title": "Pyramids",
+      "category": "ancient_site",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "giza-complex",
+      "title": "Giza Complex",
+      "category": "ancient_site",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "gobekli-tepe",
+      "title": "Gobekli Tepe",
+      "category": "ancient_site",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "sumer",
+      "title": "Sumer",
+      "category": "ancient_civilization",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "maya",
+      "title": "Maya",
+      "category": "ancient_civilization",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "atlantis",
+      "title": "Atlantis",
+      "category": "myth",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "lemuria",
+      "title": "Lemuria",
+      "category": "myth",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "shambhala",
+      "title": "Shambhala",
+      "category": "myth",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "agartha",
+      "title": "Agartha",
+      "category": "myth",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "hollow-moon-theory",
+      "title": "Hollow Moon Theory",
+      "category": "claim",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "dark-side-of-the-moon-base",
+      "title": "Dark Side of the Moon Base",
+      "category": "claim",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "lunar-operations-command",
+      "title": "Lunar Operations Command",
+      "category": "claim",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "mars-slave-colony",
+      "title": "Mars Slave Colony",
+      "category": "claim",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "cydonia",
+      "title": "Cydonia",
+      "category": "location_or_claim",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "face-on-mars",
+      "title": "Face on Mars",
+      "category": "claim",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "singing",
+      "title": "Singing",
+      "category": "practice",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "yoga",
+      "title": "Yoga",
+      "category": "practice",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "tai-chi",
+      "title": "Tai Chi",
+      "category": "practice",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "i-ching",
+      "title": "I Ching",
+      "category": "practice_or_text",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "kabbalah",
+      "title": "Kabbalah",
+      "category": "belief_system",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "gnosticism",
+      "title": "Gnosticism",
+      "category": "belief_system",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "hermeticism",
+      "title": "Hermeticism",
+      "category": "belief_system",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "alchemy",
+      "title": "Alchemy",
+      "category": "belief_system",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "occultism",
+      "title": "Occultism",
+      "category": "topic",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "luciferian-force",
+      "title": "Luciferian Force",
+      "category": "claim",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "archons",
+      "title": "Archons",
+      "category": "entity_group",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "demons",
+      "title": "Demons",
+      "category": "entity_group",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "angels",
+      "title": "Angels",
+      "category": "entity_group",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "fallen-angels",
+      "title": "Fallen Angels",
+      "category": "entity_group",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "watchers",
+      "title": "Watchers",
+      "category": "entity_group",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "archangel-michael",
+      "title": "Archangel Michael",
+      "category": "religious_figure",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "book-of-enoch",
+      "title": "Book of Enoch",
+      "category": "text",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "book-of-revelation",
+      "title": "Book of Revelation",
+      "category": "text",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "great-reset",
+      "title": "Great Reset",
+      "category": "topic",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "agenda-2030",
+      "title": "Agenda 2030",
+      "category": "topic",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "wef",
+      "title": "WEF",
+      "category": "organization",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "mass-surveillance",
+      "title": "Mass Surveillance",
+      "category": "topic",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "5g",
+      "title": "5G",
+      "category": "topic",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "geoengineering",
+      "title": "Geoengineering",
+      "category": "topic",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "mind-control",
+      "title": "Mind Control",
+      "category": "topic",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "social-contract",
+      "title": "Social Contract",
+      "category": "concept",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "hollywood-secrecy",
+      "title": "Hollywood Secrecy",
+      "category": "topic",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "child-trafficking-networks",
+      "title": "Child Trafficking Networks",
+      "category": "topic",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "epstein-blackmail-leverage",
+      "title": "Epstein Blackmail Leverage",
+      "category": "topic",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "video-blackmail-tapes",
+      "title": "Video Blackmail Tapes",
+      "category": "topic",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "temporary-flight-restriction-el-paso",
+      "title": "Temporary Flight Restriction El Paso",
+      "category": "event_or_claim",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "san-teresa-new-mexico",
+      "title": "San Teresa New Mexico",
+      "category": "location",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "southern-new-mexico",
+      "title": "Southern New Mexico",
+      "category": "location",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "sierra-nevada-spain",
+      "title": "Sierra Nevada (Spain)",
+      "category": "location",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "medell-n-colombia",
+      "title": "Medellín (Colombia)",
+      "category": "location",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    },
+    {
+      "id": "el-paso-international-airport",
+      "title": "El Paso International Airport",
+      "category": "location",
+      "aliases": [],
+      "summary": "",
+      "claim_overview": "",
+      "evidence_notes": "",
+      "status": "unverified",
+      "tags": []
+    }
+  ]
+}
