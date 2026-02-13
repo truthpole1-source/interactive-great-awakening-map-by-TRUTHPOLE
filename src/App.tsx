@@ -1,103 +1,258 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { Routes, Route, useNavigate, useParams } from 'react-router-dom';
-import { TransformComponent, TransformWrapper, type ReactZoomPanPinchRef } from 'react-zoom-pan-pinch';
-import { DEFAULT_NODES, type Node } from './data/nodes';
-import { DEFAULT_EDGES, type Edge } from './data/edges';
-import { InfoPanel } from './components/InfoPanel';
-import { SearchSheet } from './components/SearchSheet';
-import { ResumeSheet } from './components/ResumeSheet';
-import { loadReadSet, markRead, clearRead } from './utils/readState';
-import { loadEdgesFromLocalStorage, saveEdgesToLocalStorage, exportGraph, importGraphFile } from './utils/graphIO';
-import { computeCredibilityScore } from './utils/credibility';
-import { loadLastVisited, saveLastVisited } from './utils/lastVisited';
-import { loadCrumbs, pushCrumb } from './utils/breadcrumbs';
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { Routes, Route, useNavigate, useParams } from 'react-router-dom'
+import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
+import { DEFAULT_NODES, type Node } from './data/nodes'
+import { DEFAULT_EDGES, type Edge } from './data/edges'
+import { InfoPanel } from './components/InfoPanel'
+import { SearchSheet } from './components/SearchSheet'
+import { ResumeSheet } from './components/ResumeSheet'
+import { loadReadSet, markRead, clearRead } from './utils/readState'
+import { loadEdgesFromLocalStorage, saveEdgesToLocalStorage } from './utils/graphIO'
+import { computeCredibilityScore } from './utils/credibility'
+import { loadLastVisited, saveLastVisited } from './utils/lastVisited'
+import { loadCrumbs, pushCrumb } from './utils/breadcrumbs'
 
-const CONTENT_W = 1583;
-const CONTENT_H = 2048;
-const TOPBAR_H = 56;
-
-function haptic(ms = 12) {
-  try {
-    if ('vibrate' in navigator) (navigator as any).vibrate(ms);
-  } catch {}
-}
+const CONTENT_W = 1583
+const CONTENT_H = 2048
 
 function Home() {
-  const navigate = useNavigate();
-  const nodes = DEFAULT_NODES;
+  const navigate = useNavigate()
+  const nodes = DEFAULT_NODES
 
-  const [edges, setEdges] = useState<Edge[]>(() => loadEdgesFromLocalStorage(DEFAULT_EDGES));
-  useEffect(() => saveEdgesToLocalStorage(edges), [edges]);
-
-  const [readSet, setReadSet] = useState<Set<string>>(() => loadReadSet());
-  const [readFilter, setReadFilter] = useState<'all' | 'unread' | 'read'>('all');
-  const [query, setQuery] = useState('');
-
-  const [selected, setSelected] = useState<Node | null>(null);
-  const [sheetOpen, setSheetOpen] = useState(false);
-
-  const [crumbs, setCrumbs] = useState<string[]>(() => loadCrumbs());
-  const [resumeId, setResumeId] = useState<string | null>(() => loadLastVisited());
-  const resumeNode = useMemo(
-    () => (resumeId ? nodes.find((n) => n.id === resumeId) || null : null),
-    [resumeId, nodes]
-  );
-  const [showResume, setShowResume] = useState(true);
-  const [chipReady, setChipReady] = useState(true);
+  const [edges, setEdges] = useState<Edge[]>(() =>
+    loadEdgesFromLocalStorage(DEFAULT_EDGES)
+  )
 
   useEffect(() => {
-    if (!resumeNode) return;
-    const isMobile = window.matchMedia('(max-width: 900px)').matches;
-    if (!isMobile) return;
-    const t = window.setTimeout(() => {
-      setChipReady(false);
-      setShowResume(false);
-      window.setTimeout(() => setChipReady(true), 180);
-    }, 6000);
-    return () => window.clearTimeout(t);
-  }, [resumeNode]);
+    saveEdgesToLocalStorage(edges)
+  }, [edges])
+
+  const [readSet, setReadSet] = useState<Set<string>>(() => loadReadSet())
+  const [query, setQuery] = useState('')
+  const [readFilter, setReadFilter] = useState<'all' | 'unread' | 'read'>('all')
+
+  const [selected, setSelected] = useState<Node | null>(null)
+  const [sheetOpen, setSheetOpen] = useState(false)
+
+  const [crumbs, setCrumbs] = useState<string[]>(() => loadCrumbs())
+  const [resumeId, setResumeId] = useState<string | null>(() =>
+    loadLastVisited()
+  )
+
+  const resumeNode = useMemo(
+    () => (resumeId ? nodes.find(n => n.id === resumeId) || null : null),
+    [resumeId, nodes]
+  )
 
   const filtered = useMemo(() => {
-    let list = nodes;
-    if (readFilter === 'unread') list = list.filter((n) => !readSet.has(n.id));
-    if (readFilter === 'read') list = list.filter((n) => readSet.has(n.id));
-    const q = query.trim().toLowerCase();
-    if (!q) return list;
+    let list = nodes
+
+    if (readFilter === 'unread')
+      list = list.filter(n => !readSet.has(n.id))
+    if (readFilter === 'read')
+      list = list.filter(n => readSet.has(n.id))
+
+    const q = query.toLowerCase().trim()
+    if (!q) return list
+
     return list.filter(
-      (n) =>
+      n =>
         n.title.toLowerCase().includes(q) ||
-        (n.tags || []).some((t) => t.toLowerCase().includes(q)) ||
+        (n.tags || []).some(t => t.toLowerCase().includes(q)) ||
         n.category.toLowerCase().includes(q)
-    );
-  }, [nodes, readFilter, readSet, query]);
+    )
+  }, [nodes, readSet, readFilter, query])
 
-  const readCount = useMemo(() => nodes.reduce((a, n) => a + (readSet.has(n.id) ? 1 : 0), 0), [nodes, readSet]);
-  const unreadCount = useMemo(() => nodes.length - readCount, [nodes.length, readCount]);
-  const progressPct = useMemo(() => (nodes.length ? Math.round((readCount / nodes.length) * 100) : 0), [readCount, nodes.length]);
+  const readCount = nodes.filter(n => readSet.has(n.id)).length
+  const unreadCount = nodes.length - readCount
+  const progressPct = Math.round((readCount / nodes.length) * 100)
 
-  const focusNode = (n: Node, openPanel = true) => {
-    setSelected(n);
-    setReadSet((prev) => markRead(prev, n.id));
-    saveLastVisited(n.id);
-    setResumeId(n.id);
-    setCrumbs(pushCrumb(n.id));
-    if (openPanel) navigate(`/topic/${n.id}`);
-  };
+  const focusNode = (n: Node) => {
+    setSelected(n)
+    setReadSet(prev => markRead(prev, n.id))
+    saveLastVisited(n.id)
+    setResumeId(n.id)
+    setCrumbs(pushCrumb(n.id))
+    navigate(`/topic/${n.id}`)
+  }
 
   const clearSelection = () => {
-    setSelected(null);
-    navigate('/');
-  };
+    setSelected(null)
+    navigate('/')
+  }
 
-  // ✅ viewport size for fit-to-screen
-  const [vp, setVp] = useState({ w: window.innerWidth, h: window.innerHeight });
+  const cred = useMemo(
+    () => (selected ? computeCredibilityScore(selected.id, edges) : null),
+    [selected, edges]
+  )
+
+  return (
+    <div className="app">
+
+      {/* ---------------- TOPBAR ---------------- */}
+      <div className="topbar">
+
+        <div className="brand">Great Awakening Map</div>
+
+        <div className="topRow">
+
+          <input
+            className="search"
+            placeholder="Search topics..."
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+          />
+
+          <div className="filterPill">
+            {(['all', 'unread', 'read'] as const).map(v => (
+              <button
+                key={v}
+                className={`filterBtn ${readFilter === v ? 'on' : ''}`}
+                onClick={() => setReadFilter(v)}
+              >
+                {v}
+              </button>
+            ))}
+          </div>
+
+          <div className="countsPill">
+            <span className="countItem">Read {readCount}</span>
+            <span className="countDot">•</span>
+            <span className="countItem">Unread {unreadCount}</span>
+          </div>
+
+          <div className="progressPill">
+            <span className="progressNum">
+              {readCount}/{nodes.length}
+            </span>
+            <span className="progressPct">{progressPct}%</span>
+          </div>
+
+          <div className="actions">
+            <button className="ioBtn" onClick={() => setSheetOpen(true)}>
+              Find
+            </button>
+            <button className="ioBtn" onClick={() => setReadSet(clearRead())}>
+              Reset
+            </button>
+          </div>
+
+        </div>
+
+        <div className="topProgress">
+          <div
+            className="topProgressFill"
+            style={{ width: `${progressPct}%` }}
+          />
+        </div>
+
+        <div className="crumbRow">
+          {crumbs.map(id => {
+            const n = nodes.find(x => x.id === id)
+            if (!n) return null
+            return (
+              <button
+                key={id}
+                className="crumb"
+                onClick={() => focusNode(n)}
+              >
+                {n.title}
+              </button>
+            )
+          })}
+        </div>
+
+      </div>
+
+      {/* ---------------- MAP ---------------- */}
+      <TransformWrapper
+        minScale={0.5}
+        maxScale={6}
+        initialScale={1}
+        limitToBounds={false}
+        centerOnInit
+        doubleClick={{ disabled: true }}
+      >
+        <TransformComponent wrapperClass="mapWrap" contentClass="mapContent">
+          <div
+            className="map"
+            style={{ width: CONTENT_W, height: CONTENT_H }}
+          >
+            <img
+              className="mapImg"
+              src="/map.jpg"
+              alt="Map background"
+              draggable={false}
+            />
+          </div>
+        </TransformComponent>
+      </TransformWrapper>
+
+      {/* ---------------- SEARCH ---------------- */}
+      <SearchSheet
+        open={sheetOpen}
+        nodes={nodes}
+        readSet={readSet}
+        readFilter={readFilter}
+        onChangeReadFilter={setReadFilter}
+        onPick={n => {
+          setSheetOpen(false)
+          focusNode(n)
+        }}
+        onClose={() => setSheetOpen(false)}
+      />
+
+      {/* ---------------- ROUTES ---------------- */}
+      <Routes>
+        <Route path="/" element={null} />
+        <Route
+          path="/topic/:id"
+          element={
+            <TopicRoute
+              nodes={nodes}
+              onSelect={setSelected}
+              onClose={clearSelection}
+            />
+          }
+        />
+      </Routes>
+
+      {selected && (
+        <InfoPanel
+          node={selected}
+          edges={edges}
+          cred={cred || undefined}
+          onClose={clearSelection}
+        />
+      )}
+    </div>
+  )
+}
+
+function TopicRoute({
+  nodes,
+  onSelect,
+  onClose
+}: {
+  nodes: Node[]
+  onSelect: (n: Node | null) => void
+  onClose: () => void
+}) {
+  const { id } = useParams()
+
   useEffect(() => {
-    const onR = () => setVp({ w: window.innerWidth, h: window.innerHeight });
-    window.addEventListener('resize', onR);
-    return () => window.removeEventListener('resize', onR);
-  }, []);
+    if (!id) return
+    const n = nodes.find(x => x.id === id) || null
+    onSelect(n)
+    if (!n) onClose()
+  }, [id])
 
-  // ✅ zoom-pan ref so we can center on init
+  return null
+}
+
+export default function App() {
+  return <Home />
+}  // ✅ zoom-pan ref so we can center on init
   const zref = useRef<ReactZoomPanPinchRef | null>(null);
 
   // ✅ Fit + center once when mounted AND when viewport changes
