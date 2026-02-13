@@ -235,4 +235,142 @@ body{
   }
   .fabDock{ display:none; }
   .app{ padding-bottom:0; }
+}  display:none; /* hide heavy desktop actions on mobile */
+}
+
+/* progress bar under topbar */
+.topProgress{
+  margin-top:10px;
+  height:3px;
+  background:rgba(255,255,255,.10);
+  border-radius:999px;
+  overflow:hidden;
+}
+.topProgressFill{
+  height:100%;
+  background:#fff;
+  width:0%;
+}
+
+/* breadcrumbs */
+.crumbRow{
+  margin-top:10px;
+  display:flex;
+  gap:8px;
+  overflow:auto;
+  padding-bottom:2px;
+}
+.crumb{
+  white-space:nowrap;
+  border:1px solid var(--line);
+  background:var(--panel2);
+  color:var(--text);
+  border-radius:999px;
+  padding:8px 10px;
+  font-size:12px;
+}
+
+/* Map area */
+.mapWrap{
+  width:100%;
+  height:100%;
+  touch-action:none;
+}
+.mapContent{
+  width:100%;
+  height:100%;
+}
+.map{
+  position:relative;
+  background:#000;
+}
+.mapImg{
+  width:100%;
+  height:100%;
+  object-fit:contain; /* critical for mobile */
+  display:block;
+}
+
+/* edges (hidden for now to keep map clean on mobile) */
+.edges{ position:absolute; inset:0; pointer-events:none; opacity:.20; }
+.linkLine{ stroke:#fff; opacity:.35; }
+
+/* hotspots */
+.hotspot{
+  position:absolute;
+  transform:translate(-50%,-50%);
+  background:#fff;
+  color:#000;
+  border:0;
+  border-radius:8px;
+  padding:8px 10px;
+  font-weight:700;
+  font-size:12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.45);
+  transition: transform .08s ease, filter .12s ease;
+}
+.hotspot:active{
+  transform:translate(-50%,-50%) scale(.98);
+  filter:brightness(.92);
+}
+.hotspot.read{
+  opacity:.55;
+}
+.hotspotLabel{ display:block; max-width:160px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+/* Bottom mobile dock */
+.fabDock{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  z-index:60;
+  padding:10px;
+  display:flex;
+  gap:10px;
+  background:linear-gradient(to top, rgba(0,0,0,.92), rgba(0,0,0,.55));
+  border-top:1px solid var(--line);
+}
+
+.fabAction{
+  flex:1;
+  height:48px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:var(--panel);
+  color:var(--text);
+  font-weight:800;
+}
+.fabAction.primary{
+  background:#fff;
+  color:#000;
+  border-color:#fff;
+}
+.fabSub{
+  display:block;
+  font-weight:600;
+  font-size:12px;
+  opacity:.75;
+}
+
+/* Make space so dock doesn't cover content */
+.app{
+  padding-bottom:70px;
+}
+
+/* Desktop enhancements */
+@media (min-width: 900px){
+  body{ overflow:auto; }
+  .actions{ display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; }
+  .ioBtn{
+    height:36px;
+    border-radius:10px;
+    border:1px solid var(--line);
+    background:#fff;
+    color:#000;
+    font-weight:800;
+    padding:0 12px;
+  }
+  .fabDock{ display:none; }
+  .app{ padding-bottom:0; }
 }
