@@ -1,103 +1,58 @@
-/* ===== Truthpole: mobile-first black UI ===== */
-
-:root{
-  --bg: #000;
-  --panel: #0b0b0b;
-  --panel2:#101010;
-  --line:#1c1c1c;
-  --text:#fff;
-  --muted:#bdbdbd;
-  --chip:#121212;
-  --chipOn:#ffffff;
-  --chipOnText:#000000;
-  --shadow: 0 10px 30px rgba(0,0,0,.55);
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: #000;
+  overflow: hidden;
 }
 
-*{ box-sizing:border-box; }
-html,body{ height:100%; }
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family: system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
-  overflow:hidden; /* app manages scrolling */
-}
-#root{ height:100%; }
-
-/* App layout */
-.app{
-  height:100%;
-  display:flex;
-  flex-direction:column;
-  background:var(--bg);
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* Top bar */
-.topbar{
-  position:sticky;
-  top:0;
-  z-index:50;
-  background:linear-gradient(to bottom, rgba(0,0,0,.92), rgba(0,0,0,.80));
-  border-bottom:1px solid var(--line);
-  padding:10px 10px 8px;
-  box-shadow: var(--shadow);
+.app {
+  height: 100%;
+  width: 100%;
+  background: #000;
+  display: flex;
+  flex-direction: column;
 }
 
-.brand{
-  font-size:16px;
-  font-weight:600;
-  letter-spacing:.2px;
-  margin-bottom:8px;
+/* ---------- topbar ---------- */
+.topbar {
+  z-index: 10;
+  background: #000;
+  padding: 10px 12px;
+  border-bottom: 1px solid #222;
 }
 
-.search{
-  width:100%;
-  height:38px;
-  border-radius:10px;
-  border:1px solid var(--line);
-  background:var(--panel);
-  color:var(--text);
-  padding:0 12px;
-  outline:none;
-}
-.search::placeholder{ color:rgba(255,255,255,.55); }
-
-/* Pills row (stack on mobile) */
-.filterPill, .countsPill, .progressPill{
-  margin-top:10px;
-  border:1px solid var(--line);
-  background:var(--panel);
-  border-radius:12px;
-  padding:6px;
-  display:flex;
-  align-items:center;
-  gap:6px;
+.brand {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
 }
 
-.filterBtn{
-  flex:1;
-  height:34px;
-  border-radius:10px;
-  border:1px solid var(--line);
-  background:var(--chip);
-  color:var(--text);
-  font-weight:600;
-}
-.filterBtn.on{
-  background:var(--chipOn);
-  color:var(--chipOnText);
-  border-color:#fff;
+.search {
+  width: 100%;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid #333;
+  background: #111;
+  color: #fff;
+  padding: 0 12px;
+  outline: none;
+  margin-bottom: 10px;
 }
 
-.countItem{ font-size:13px; color:var(--muted); }
-.countItem.emphasis{ color:var(--text); }
-.countDot{ color:rgba(255,255,255,.35); }
+.filterPill {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+}
 
-.progressNum{ font-size:13px; color:var(--muted); }
-.progressPct{ margin-left:auto; font-weight:700; }
-
-.actions{
-  display:none; /* hide heavy desktop actions on mobile */
+.filterBtn {  display:none; /* hide heavy desktop actions on mobile */
 }
 
 /* progress bar under topbar */
