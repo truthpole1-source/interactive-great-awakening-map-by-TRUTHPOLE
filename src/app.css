@@ -1,103 +1,233 @@
-/* Base */
-html, body, #root {
-  height: 100%;
-  margin: 0;
-  background: #000;
-  color: #fff;
-  overflow: hidden;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+:root{
+  --bg:#000;
+  --panel:#0b0b0b;
+  --panel2:#111;
+  --text:#f2f2f2;
+  --muted:#a9a9a9;
+  --line:#2a2a2a;
+  --chip:#1a1a1a;
+  --chip2:#222;
 }
 
-.app {
-  height: 100%;
-  width: 100%;
-  background: #000;
-  overflow: hidden;
+*{ box-sizing:border-box; }
+html, body{ height:100%; margin:0; padding:0; background:var(--bg); color:var(--text); }
+#root{ height:100%; }
+
+.app{
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  background:var(--bg);
 }
 
-/* ---------- Top bar (fixed + responsive) ---------- */
+/* ---------------- TOPBAR ---------------- */
 .topbar{
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 50;
-  background: rgba(18,18,18,.94);
-  border-bottom: 1px solid rgba(255,255,255,.10);
-  padding: 10px 10px 8px;
+  position:sticky;
+  top:0;
+  z-index:50;
+  background:linear-gradient(to bottom, rgba(0,0,0,.92), rgba(0,0,0,.75));
+  border-bottom:1px solid var(--line);
+  padding:10px 10px 8px;
+  backdrop-filter: blur(10px);
 }
 
-/* row 1 */
-.topbar .brand{
-  font-weight: 800;
-  font-size: 14px;
-  letter-spacing: .2px;
-  line-height: 1;
-  opacity: .95;
+.brand{
+  font-weight:700;
+  font-size:14px;
+  margin-bottom:8px;
+  letter-spacing:.2px;
 }
 
-/* Make topbar content wrap cleanly */
-.topbar{
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-/* Row that holds search + pills + buttons */
+/* this is the row that holds search + pills + buttons */
 .topRow{
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-items: center;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  align-items:center;
 }
 
+/* search */
 .search{
-  flex: 1 1 220px;
-  min-width: 140px;
-  padding: 9px 10px;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,.14);
-  background: rgba(255,255,255,.07);
-  color: #fff;
-  outline: none;
-  font-size: 14px;
-}
-.search::placeholder{ color: rgba(255,255,255,.55); }
-
-/* Pills + actions */
-.filterPill, .countsPill, .progressPill{
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,.10);
-  background: rgba(255,255,255,.05);
-  flex: 0 0 auto;
+  flex: 1 1 260px;
+  min-width: 180px;
+  height:34px;
+  padding:0 10px;
+  border-radius:8px;
+  border:1px solid var(--line);
+  background:rgba(17,17,17,.85);
+  color:var(--text);
+  outline:none;
 }
 
+/* filter buttons pill */
+.filterPill{
+  display:flex;
+  gap:6px;
+  padding:4px;
+  border-radius:10px;
+  border:1px solid var(--line);
+  background:rgba(17,17,17,.75);
+}
+
+.filterBtn{
+  height:28px;
+  padding:0 10px;
+  border-radius:8px;
+  border:1px solid transparent;
+  background:transparent;
+  color:var(--muted);
+  font-size:12px;
+  cursor:pointer;
+}
+
+.filterBtn.on{
+  background:rgba(255,255,255,.1);
+  color:var(--text);
+  border-color:rgba(255,255,255,.12);
+}
+
+/* counts + progress */
+.countsPill, .progressPill{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  height:34px;
+  padding:0 10px;
+  border-radius:10px;
+  border:1px solid var(--line);
+  background:rgba(17,17,17,.75);
+  white-space:nowrap;
+  font-size:12px;
+  color:var(--muted);
+}
+
+.countDot{ opacity:.6; }
+
+.progressNum{ color:var(--text); opacity:.9; }
+.progressPct{ color:var(--muted); }
+
+/* actions - IMPORTANT: horizontal scroll on small screens */
 .actions{
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+  display:flex;
+  gap:6px;
+  align-items:center;
   flex: 1 1 auto;
-  justify-content: flex-end;
+  min-width: 220px;
+  overflow-x:auto;
+  padding-bottom:2px;
+  scrollbar-width:none;
+}
+.actions::-webkit-scrollbar{ display:none; }
+
+.ioBtn{
+  height:32px;
+  padding:0 10px;
+  border-radius:10px;
+  border:1px solid var(--line);
+  background:rgba(20,20,20,.85);
+  color:var(--text);
+  font-size:12px;
+  cursor:pointer;
+  white-space:nowrap;
+  flex:0 0 auto;
+}
+.ioBtn:active{ transform:scale(.98); }
+
+/* progress bar under row */
+.topProgress{
+  margin-top:10px;
+  height:4px;
+  background:rgba(255,255,255,.08);
+  border-radius:99px;
+  overflow:hidden;
+}
+.topProgressFill{
+  height:100%;
+  background:rgba(255,255,255,.35);
+  width:0%;
 }
 
-/* Buttons */
-.filterBtn, .ioBtn, .crumb, .fabAction{
-  -webkit-tap-highlight-color: transparent;
-  user-select: none;
-  cursor: pointer;
+/* crumbs row */
+.crumbRow{
+  display:flex;
+  gap:6px;
+  margin-top:8px;
+  overflow-x:auto;
+  padding-bottom:2px;
+  scrollbar-width:none;
+}
+.crumbRow::-webkit-scrollbar{ display:none; }
+
+.crumb{
+  flex:0 0 auto;
+  height:28px;
+  padding:0 10px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:rgba(20,20,20,.7);
+  color:var(--muted);
+  font-size:12px;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.crumb:hover{ color:var(--text); }
+
+/* ---------------- MAP AREA ---------------- */
+.mapWrap{
+  width:100%;
+  height:calc(100vh - 120px);
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  overflow:hidden;
+  background:#000;
 }
 
-.filterBtn, .ioBtn{
-  padding: 8px 10px;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,.14);
-  background: rgba(255,255,255,.06);
-  color: rgba(255,255,255,.92);
-  font-size: 12px;
-  line-height: 1;
-  white-space: nowrap;
+.mapContent{
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+}
+
+.map{
+  position:relative;
+}
+
+.mapImg{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+  user-select:none;
+  pointer-events:none; /* important: lets pan/zoom work smoothly */
+}
+
+/* ---------------- MOBILE IMPROVEMENTS ---------------- */
+@media (max-width: 900px){
+  .brand{
+    font-size:13px;
+    margin-bottom:6px;
+  }
+
+  .search{
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+
+  .filterPill, .countsPill, .progressPill{
+    flex: 0 0 auto;
+  }
+
+  .actions{
+    flex: 1 1 100%;
+    min-width: 0;
+    overflow-x:auto; /* horizontal scroll for buttons */
+  }
+
+  .mapWrap{
+    height:calc(100vh - 160px);
+  }
+}  white-space: nowrap;
 }
 .filterBtn.on{
   background: rgba(255,255,255,.18);
