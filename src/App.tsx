@@ -1,6 +1,10 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Routes, Route, useNavigate, useParams } from "react-router-dom";
-import { TransformComponent, TransformWrapper, type ReactZoomPanPinchRef } from "react-zoom-pan-pinch";
+import {
+  TransformComponent,
+  TransformWrapper,
+  type ReactZoomPanPinchRef,
+} from "react-zoom-pan-pinch";
 
 import { DEFAULT_NODES, type Node } from "./data/nodes";
 import { DEFAULT_EDGES, type Edge } from "./data/edges";
@@ -10,32 +14,86 @@ import { SearchSheet } from "./components/SearchSheet";
 import { ResumeSheet } from "./components/ResumeSheet";
 
 import { loadReadSet, markRead, clearRead } from "./utils/readState";
-import { loadEdgesFromLocalStorage, saveEdgesToLocalStorage, exportGraph, importGraphFile } from "./utils/graphIO";
+import {
+  loadEdgesFromLocalStorage,
+  saveEdgesToLocalStorage,
+  exportGraph,
+  importGraphFile,
+} from "./utils/graphIO";
 import { computeCredibilityScore } from "./utils/credibility";
 import { loadLastVisited, saveLastVisited } from "./utils/lastVisited";
 import { loadCrumbs, pushCrumb } from "./utils/breadcrumbs";
 
 import "./app.css";
 
-// Matches public/map.jpg
+// Matches the dimensions of public/map.jpg
 const CONTENT_W = 1583;
 const CONTENT_H = 2048;
 
-function haptic(ms = 10) {
+// Layout heights (CSS uses the same)
+const TOPBAR_H = 168; // mobile-ish average; desktop will naturally fit
+const DOCK_H = 86;
+
+function haptic(ms = 12) {
   try {
     if ("vibrate" in navigator) (navigator as any).vibrate(ms);
   } catch {}
 }
 
-export default function App() {
-  return <Home />;
+function useViewport() {
+  const [vp, setVp] = useState({ w: window.innerWidth, h: window.innerHeight });
+  useEffect(() => {
+    const onR = () => setVp({ w: window.innerWidth, h: window.innerHeight });
+    window.addEventListener("resize", onR);
+    return () => window.removeEventListener("resize", onR);
+  }, []);
+  return vp;
+}
+
+function Splash({ onEnter }: { onEnter: () => void }) {
+  const [fade, setFade] = useState(false);
+
+  useEffect(() => {
+    if (!fade) return;
+    const t = window.setTimeout(onEnter, 850);
+    return () => window.clearTimeout(t);
+  }, [fade, onEnter]);
+
+  return (
+    <div className={`splash ${fade ? "fade-out" : ""}`}>
+      <div className="ritual">
+        <img
+          className="ritualLogo"
+          src="/truthpole-logo.jpg"
+          alt="Truthpole"
+          draggable={false}
+        />
+        <div className="ritualTitle">Great Awakening Map</div>
+        <div className="ritualSub">Tap to enter the grid</div>
+
+        <button
+          className="ritualBtn"
+          onClick={() => {
+            haptic(18);
+            setFade(true);
+          }}
+        >
+          ENTER THE GRID
+        </button>
+      </div>
+    </div>
+  );
 }
 
 function Home() {
   const navigate = useNavigate();
+  const vp = useViewport();
+
   const nodes = DEFAULT_NODES;
 
-  const [edges, setEdges] = useState<Edge[]>(() => loadEdgesFromLocalStorage(DEFAULT_EDGES));
+  const [edges, setEdges] = useState<Edge[]>(() =>
+    loadEdgesFromLocalStorage(DEFAULT_EDGES)
+  );
   useEffect(() => saveEdgesToLocalStorage(edges), [edges]);
 
   const [readSet, setReadSet] = useState<Set<string>>(() => loadReadSet());
@@ -73,15 +131,13 @@ function Home() {
     let list = nodes;
     if (readFilter === "unread") list = list.filter((n) => !readSet.has(n.id));
     if (readFilter === "read") list = list.filter((n) => readSet.has(n.id));
-
     const q = query.trim().toLowerCase();
     if (!q) return list;
-
     return list.filter(
       (n) =>
         n.title.toLowerCase().includes(q) ||
         (n.tags || []).some((t) => t.toLowerCase().includes(q)) ||
-        (n.category || "").toLowerCase().includes(q)
+        n.category.toLowerCase().includes(q)
     );
   }, [nodes, readFilter, readSet, query]);
 
@@ -89,20 +145,35 @@ function Home() {
     () => nodes.reduce((a, n) => a + (readSet.has(n.id) ? 1 : 0), 0),
     [nodes, readSet]
   );
-
   const unreadCount = useMemo(() => nodes.length - readCount, [nodes.length, readCount]);
-
   const progressPct = useMemo(
     () => (nodes.length ? Math.round((readCount / nodes.length) * 100) : 0),
     [readCount, nodes.length]
   );
+
+  // Track transform for nearest-unread
+  const [t, setT] = useState({ scale: 1, positionX: 0, positionY: 0 });
+
+  const viewCenter = useMemo(() => {
+    // Center of current view in content coords
+    const left = -t.positionX / t.scale;
+    const top = -t.positionY / t.scale;
+
+    // stage height subtracts the UI
+    const stageW = vp.w;
+    const stageH = vp.h - TOPBAR_H - DOCK_H;
+
+    const cx = left + (stageW / 2) / t.scale;
+    const cy = top + (stageH / 2) / t.scale;
+    return { cx, cy };
+  }, [t, vp]);
 
   const focusNode = (n: Node, openPanel = true) => {
     setSelected(n);
     setReadSet((prev) => markRead(prev, n.id));
     saveLastVisited(n.id);
     setResumeId(n.id);
-    setCrumbs(pushCrumb(n.id));
+    setCrumbs((prev) => pushCrumb(n.id, prev));
     if (openPanel) navigate(`/topic/${n.id}`);
   };
 
@@ -111,59 +182,37 @@ function Home() {
     navigate("/");
   };
 
-  // ---- Zoom / Fit / Center ----
-  const zref = useRef<ReactZoomPanPinchRef | null>(null);
-  const topbarRef = useRef<HTMLElement | null>(null);
-  const dockRef = useRef<HTMLDivElement | null>(null);
+  const pickNearestUnread = (pool: Node[]) => {
+    const placedPool = pool.filter((n) => n.x >= 0 && n.y >= 0);
+    const unread = placedPool.filter((n) => !readSet.has(n.id));
+    if (!unread.length) return null;
 
-  const [vp, setVp] = useState({ w: window.innerWidth, h: window.innerHeight });
-  useEffect(() => {
-    const onR = () => setVp({ w: window.innerWidth, h: window.innerHeight });
-    window.addEventListener("resize", onR);
-    return () => window.removeEventListener("resize", onR);
-  }, []);
+    let best = unread[0];
+    let bestD = Infinity;
 
-  const fitAndCenter = () => {
-    const api = zref.current;
-    if (!api) return;
-
-    const topH = topbarRef.current?.getBoundingClientRect().height ?? 0;
-    const dockH = dockRef.current?.getBoundingClientRect().height ?? 0;
-
-    const pad = 12;
-    const stageW = vp.w;
-    const stageH = vp.h - topH - dockH;
-
-    const scale = Math.min((stageW - pad * 2) / CONTENT_W, (stageH - pad * 2) / CONTENT_H);
-
-    const x = (stageW - CONTENT_W * scale) / 2;
-    const y = (stageH - CONTENT_H * scale) / 2;
-
-    api.setTransform(x, y, scale, 0);
+    for (const n of unread) {
+      const nx = n.x * CONTENT_W;
+      const ny = n.y * CONTENT_H;
+      const dx = nx - viewCenter.cx;
+      const dy = ny - viewCenter.cy;
+      const d2 = dx * dx + dy * dy;
+      if (d2 < bestD) {
+        bestD = d2;
+        best = n;
+      }
+    }
+    return best;
   };
 
-  useLayoutEffect(() => {
-    const t = window.setTimeout(() => fitAndCenter(), 50);
-    return () => window.clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [vp.w, vp.h]);
-
-  useEffect(() => {
-    const t = window.setTimeout(() => fitAndCenter(), 50);
-    return () => window.clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sheetOpen, showResume]);
-
-  // ---- Continue next unread ----
   const continueNextUnread = () => {
     const pool = readFilter === "all" ? nodes : filtered;
-    const unread = pool.filter((n) => n.x >= 0 && n.y >= 0 && !readSet.has(n.id));
-    if (!unread.length) return;
+    const next = pickNearestUnread(pool);
+    if (!next) return;
     haptic(12);
-    focusNode(unread[0], true);
+    focusNode(next, true);
   };
 
-  // Keyboard: N
+  // Keyboard: N next unread
   useEffect(() => {
     const onK = (e: KeyboardEvent) => {
       const tag = (e.target as HTMLElement)?.tagName?.toLowerCase();
@@ -176,50 +225,50 @@ function Home() {
     window.addEventListener("keydown", onK);
     return () => window.removeEventListener("keydown", onK);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [readFilter, filtered, readSet]);
+  }, [readFilter, filtered, readSet, viewCenter]);
 
-  const cred = useMemo(() => (selected ? computeCredibilityScore(selected.id, edges) : null), [selected, edges]);
+  const cred = useMemo(
+    () => (selected ? computeCredibilityScore(selected.id, edges) : null),
+    [selected, edges]
+  );
+
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  // ---- Entry Ritual Splash ----
-  const [showSplash, setShowSplash] = useState(false);
-  const [splashPhase, setSplashPhase] = useState<"enter" | "exit">("enter");
+  // Zoom-pan ref for Center button
+  const zref = useRef<ReactZoomPanPinchRef | null>(null);
 
+  const centerToFit = () => {
+    const api = zref.current;
+    if (!api) return;
+
+    const stageW = vp.w;
+    const stageH = vp.h - TOPBAR_H - DOCK_H;
+
+    const scale = Math.min(stageW / CONTENT_W, stageH / CONTENT_H);
+    const x = (stageW - CONTENT_W * scale) / 2;
+    const y = (stageH - CONTENT_H * scale) / 2;
+
+    api.setTransform(x, y, scale, 250, "easeOut");
+  };
+
+  // Center once on mount (nice for mobile)
   useEffect(() => {
-    try {
-      const seen = localStorage.getItem("tp_gam_splash_seen");
-      if (!seen) {
-        setShowSplash(true);
-        setSplashPhase("enter");
-
-        // total ~3.4s experience (logo + text + dissolve)
-        const t1 = window.setTimeout(() => setSplashPhase("exit"), 2800);
-        const t2 = window.setTimeout(() => {
-          setShowSplash(false);
-          localStorage.setItem("tp_gam_splash_seen", "1");
-        }, 3400);
-
-        return () => {
-          window.clearTimeout(t1);
-          window.clearTimeout(t2);
-        };
-      }
-    } catch {}
+    const t = window.setTimeout(() => centerToFit(), 120);
+    return () => window.clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <div className="app">
-      {/* SPLASH OVERLAY */}
-      {showSplash ? (
-        <Splash phase={splashPhase} />
-      ) : null}
-
-      {/* TOPBAR */}
-      <header ref={topbarRef} className="topbar">
+    <div className="appShell">
+      {/* TOP BAR */}
+      <header className="topbar">
         <div className="topbarRow">
-          <div className="brand">Great Awakening Map</div>
+          <div className="brandWrap">
+            <img className="brandLogo" src="/truthpole-logo.jpg" alt="" />
+            <div className="brandText">Great Awakening Map</div>
+          </div>
 
-          <div className="progressMini" title="Progress">
+          <div className="progressMini" title="Read progress">
             <div className="progressTrack">
               <div className="progressFill" style={{ width: `${progressPct}%` }} />
             </div>
@@ -234,9 +283,11 @@ function Home() {
             className="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search the map…"
+            placeholder="Search topics…"
           />
+        </div>
 
+        <div className="topbarRow split">
           <div className="filters" role="group" aria-label="Read filter">
             {(["all", "unread", "read"] as const).map((v) => (
               <button
@@ -248,26 +299,29 @@ function Home() {
               </button>
             ))}
           </div>
-        </div>
 
-        <div className="topbarRow actionsRow">
           <div className="counts">
-            <span className="count read">Explored {readCount}</span>
+            <span className="count">Read {readCount}</span>
             <span className="dot">•</span>
-            <span className="count unread">Unexplored {unreadCount}</span>
+            <span className="count">Unread {unreadCount}</span>
           </div>
 
-          <div className="actions">
+          <div className="actions hideMobile">
             <button className="btn" onClick={() => { haptic(10); setSheetOpen(true); }}>
-              Find
+              Search
             </button>
-            <button className="btn primary" onClick={() => continueNextUnread()}>
-              {unreadCount === 0 ? "Complete" : "Resume"}
+            <button className="btn primary" onClick={() => { haptic(12); continueNextUnread(); }}>
+              {unreadCount === 0 ? "Complete" : "Continue"}
             </button>
-
-            <button className="btn ghost hideMobile" onClick={() => setReadSet(clearRead())}>Reset</button>
-            <button className="btn ghost hideMobile" onClick={() => exportGraph(nodes, edges)}>Export</button>
-            <button className="btn ghost hideMobile" onClick={() => fileInputRef.current?.click()}>Import</button>
+            <button className="btn ghost" onClick={() => setReadSet(clearRead())}>
+              Reset
+            </button>
+            <button className="btn ghost" onClick={() => exportGraph(nodes, edges)}>
+              Export
+            </button>
+            <button className="btn ghost" onClick={() => fileInputRef.current?.click()}>
+              Import
+            </button>
 
             <input
               ref={fileInputRef}
@@ -301,7 +355,7 @@ function Home() {
         ) : null}
       </header>
 
-      {/* RESUME */}
+      {/* Resume */}
       {resumeNode ? (
         <ResumeSheet
           open={showResume}
@@ -328,11 +382,11 @@ function Home() {
         </button>
       ) : null}
 
-      {/* MAP STAGE */}
+      {/* MAP */}
       <main className="stage">
         <TransformWrapper
-          ref={zref}
-          minScale={0.12}
+          ref={zref as any}
+          minScale={0.2}
           maxScale={8}
           initialScale={1}
           centerOnInit={false}
@@ -342,19 +396,30 @@ function Home() {
           wheel={{ step: 0.12 }}
           pinch={{ step: 6 }}
           panning={{ velocityDisabled: true }}
+          onTransformed={(_, state) =>
+            setT({
+              scale: state.scale,
+              positionX: state.positionX,
+              positionY: state.positionY,
+            })
+          }
         >
           <TransformComponent wrapperClass="mapWrap" contentClass="mapContent">
             <div className="map" style={{ width: CONTENT_W, height: CONTENT_H }}>
               <img className="mapImg" src="/map.jpg" alt="Map background" draggable={false} />
 
+              {/* Edges */}
               <svg className="edges" width={CONTENT_W} height={CONTENT_H}>
                 {edges.map((e) => {
                   const a = nodes.find((n) => n.id === e.from);
                   const b = nodes.find((n) => n.id === e.to);
                   if (!a || !b) return null;
 
-                  const x1 = a.x * CONTENT_W, y1 = a.y * CONTENT_H;
-                  const x2 = b.x * CONTENT_W, y2 = b.y * CONTENT_H;
+                  const x1 = a.x * CONTENT_W;
+                  const y1 = a.y * CONTENT_H;
+                  const x2 = b.x * CONTENT_W;
+                  const y2 = b.y * CONTENT_H;
+
                   const sw = e.strength === 3 ? 2.6 : e.strength === 2 ? 2.0 : 1.4;
 
                   return (
@@ -371,7 +436,10 @@ function Home() {
                 })}
               </svg>
 
+              {/* Hotspots */}
               {filtered.filter((n) => n.x >= 0 && n.y >= 0).map((n) => {
+                const left = n.x * 100;
+                const top = n.y * 100;
                 const isRead = readSet.has(n.id);
                 const isSel = selected?.id === n.id;
 
@@ -379,8 +447,11 @@ function Home() {
                   <button
                     key={n.id}
                     className={`hotspot ${isSel ? "active" : ""} ${isRead ? "read" : ""}`}
-                    style={{ left: `${n.x * 100}%`, top: `${n.y * 100}%` }}
-                    onClick={() => { haptic(10); focusNode(n, true); }}
+                    style={{ left: `${left}%`, top: `${top}%` }}
+                    onClick={() => {
+                      haptic(10);
+                      focusNode(n, true);
+                    }}
                     aria-label={n.title}
                   >
                     <span className="hotspotLabel">{n.title}</span>
@@ -393,15 +464,29 @@ function Home() {
       </main>
 
       {/* MOBILE DOCK */}
-      <div ref={dockRef} className="dock" role="group" aria-label="Quick actions">
-        <button className="dockBtn" onClick={() => { haptic(10); setSheetOpen(true); }}>
-          Find
+      <div className="dock" role="group" aria-label="Quick actions">
+        <button
+          className="dockBtn"
+          onClick={() => { haptic(10); setSheetOpen(true); }}
+          aria-label="Search topics"
+        >
+          Search
         </button>
-        <button className="dockBtn primary" onClick={() => continueNextUnread()}>
-          {unreadCount === 0 ? "Complete" : "Next unread"}
-          <span className="dockSub">Unexplored {unreadCount}</span>
+
+        <button
+          className="dockBtn primary"
+          onClick={() => { haptic(12); continueNextUnread(); }}
+          aria-label="Next unread"
+        >
+          Next unread
+          <span className="dockSub">Unread {unreadCount}</span>
         </button>
-        <button className="dockBtn ghost" onClick={() => { haptic(8); fitAndCenter(); }}>
+
+        <button
+          className="dockBtn"
+          onClick={() => { haptic(10); centerToFit(); }}
+          aria-label="Center map"
+        >
           Center
         </button>
       </div>
@@ -412,13 +497,27 @@ function Home() {
         readSet={readSet}
         readFilter={readFilter}
         onChangeReadFilter={setReadFilter}
-        onPick={(n) => { setSheetOpen(false); focusNode(n, true); }}
+        onPick={(n) => {
+          setSheetOpen(false);
+          focusNode(n, true);
+        }}
         onClose={() => setSheetOpen(false)}
       />
 
       <Routes>
         <Route path="/" element={null} />
-        <Route path="/topic/:id" element={<TopicRoute nodes={nodes} onSelect={setSelected} onClose={clearSelection} />} />
+        <Route
+          path="/topic/:id"
+          element={
+            <TopicRoute
+              nodes={nodes}
+              edges={edges}
+              onSelect={setSelected}
+              selected={selected}
+              onClose={clearSelection}
+            />
+          }
+        />
       </Routes>
 
       {selected ? (
@@ -434,7 +533,9 @@ function TopicRoute({
   onClose,
 }: {
   nodes: Node[];
+  edges: Edge[];
   onSelect: (n: Node | null) => void;
+  selected: Node | null;
   onClose: () => void;
 }) {
   const { id } = useParams();
@@ -449,37 +550,25 @@ function TopicRoute({
   return null;
 }
 
-function Splash({ phase }: { phase: "enter" | "exit" }) {
-  // Put your logo at: public/logo.png
-  // If you don’t upload one, the inline SVG will show.
-  const [imgOk, setImgOk] = useState(true);
+export default function App() {
+  const [entered, setEntered] = useState(false);
+
+  useEffect(() => {
+    const v = localStorage.getItem("ga_entered") === "1";
+    if (v) setEntered(true);
+  }, []);
 
   return (
-    <div className={`splash ${phase === "exit" ? "splashExit" : ""}`} aria-hidden="true">
-      <div className="splashInner">
-        <div className="splashLogo">
-          {imgOk ? (
-            <img
-              src="/logo.png"
-              alt="Truthpole"
-              onError={() => setImgOk(false)}
-              draggable={false}
-            />
-          ) : (
-            <svg width="72" height="72" viewBox="0 0 64 64" aria-hidden="true">
-              <path
-                fill="white"
-                d="M32 6c14 0 24 9 24 22 0 15-11 30-24 30S8 43 8 28C8 15 18 6 32 6zm-14 20c-2 0-4 2-4 4 0 6 6 10 14 10s14-4 14-10c0-2-2-4-4-4-4 0-6 4-10 4s-6-4-10-4zm4 5a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm20 0a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"
-              />
-            </svg>
-          )}
-        </div>
-
-        <div className="splashText">
-          <div className="splashTitle">INTERACTIVE GREAT AWAKENING MAP</div>
-          <div className="splashBy">by Truthpole</div>
-        </div>
-      </div>
+    <div className="app">
+      <Home />
+      {!entered && (
+        <Splash
+          onEnter={() => {
+            localStorage.setItem("ga_entered", "1");
+            setEntered(true);
+          }}
+        />
+      )}
     </div>
   );
 }
