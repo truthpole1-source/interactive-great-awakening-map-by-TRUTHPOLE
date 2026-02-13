@@ -1,954 +1,137 @@
-:root{
-  --bg:#000;
-  --panel:#0b0b0b;
-  --panel2:#111;
-  --text:#f2f2f2;
-  --muted:#a9a9a9;
-  --line:#2a2a2a;
-  --chip:#1a1a1a;
-  --chip2:#222;
+/* GLOBAL RESET */
+* {
+  box-sizing: border-box;
 }
 
-*{ box-sizing:border-box; }
-html, body{ height:100%; margin:0; padding:0; background:var(--bg); color:var(--text); }
-#root{ height:100%; }
-
-.app{
-  height:100%;
-  display:flex;
-  flex-direction:column;
-  background:var(--bg);
-}
-
-/* ---------------- TOPBAR ---------------- */
-.topbar{
-  position:sticky;
-  top:0;
-  z-index:50;
-  background:linear-gradient(to bottom, rgba(0,0,0,.92), rgba(0,0,0,.75));
-  border-bottom:1px solid var(--line);
-  padding:10px 10px 8px;
-  backdrop-filter: blur(10px);
-}
-
-.brand{
-  font-weight:700;
-  font-size:14px;
-  margin-bottom:8px;
-  letter-spacing:.2px;
-}
-
-/* this is the row that holds search + pills + buttons */
-.topRow{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  align-items:center;
-}
-
-/* search */
-.search{
-  flex: 1 1 260px;
-  min-width: 180px;
-  height:34px;
-  padding:0 10px;
-  border-radius:8px;
-  border:1px solid var(--line);
-  background:rgba(17,17,17,.85);
-  color:var(--text);
-  outline:none;
-}
-
-/* filter buttons pill */
-.filterPill{
-  display:flex;
-  gap:6px;
-  padding:4px;
-  border-radius:10px;
-  border:1px solid var(--line);
-  background:rgba(17,17,17,.75);
-}
-
-.filterBtn{
-  height:28px;
-  padding:0 10px;
-  border-radius:8px;
-  border:1px solid transparent;
-  background:transparent;
-  color:var(--muted);
-  font-size:12px;
-  cursor:pointer;
-}
-
-.filterBtn.on{
-  background:rgba(255,255,255,.1);
-  color:var(--text);
-  border-color:rgba(255,255,255,.12);
-}
-
-/* counts + progress */
-.countsPill, .progressPill{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  height:34px;
-  padding:0 10px;
-  border-radius:10px;
-  border:1px solid var(--line);
-  background:rgba(17,17,17,.75);
-  white-space:nowrap;
-  font-size:12px;
-  color:var(--muted);
-}
-
-.countDot{ opacity:.6; }
-
-.progressNum{ color:var(--text); opacity:.9; }
-.progressPct{ color:var(--muted); }
-
-/* actions - IMPORTANT: horizontal scroll on small screens */
-.actions{
-  display:flex;
-  gap:6px;
-  align-items:center;
-  flex: 1 1 auto;
-  min-width: 220px;
-  overflow-x:auto;
-  padding-bottom:2px;
-  scrollbar-width:none;
-}
-.actions::-webkit-scrollbar{ display:none; }
-
-.ioBtn{
-  height:32px;
-  padding:0 10px;
-  border-radius:10px;
-  border:1px solid var(--line);
-  background:rgba(20,20,20,.85);
-  color:var(--text);
-  font-size:12px;
-  cursor:pointer;
-  white-space:nowrap;
-  flex:0 0 auto;
-}
-.ioBtn:active{ transform:scale(.98); }
-
-/* progress bar under row */
-.topProgress{
-  margin-top:10px;
-  height:4px;
-  background:rgba(255,255,255,.08);
-  border-radius:99px;
-  overflow:hidden;
-}
-.topProgressFill{
-  height:100%;
-  background:rgba(255,255,255,.35);
-  width:0%;
-}
-
-/* crumbs row */
-.crumbRow{
-  display:flex;
-  gap:6px;
-  margin-top:8px;
-  overflow-x:auto;
-  padding-bottom:2px;
-  scrollbar-width:none;
-}
-.crumbRow::-webkit-scrollbar{ display:none; }
-
-.crumb{
-  flex:0 0 auto;
-  height:28px;
-  padding:0 10px;
-  border-radius:999px;
-  border:1px solid var(--line);
-  background:rgba(20,20,20,.7);
-  color:var(--muted);
-  font-size:12px;
-  cursor:pointer;
-  white-space:nowrap;
-}
-.crumb:hover{ color:var(--text); }
-
-/* ---------------- MAP AREA ---------------- */
-.mapWrap{
-  width:100%;
-  height:calc(100vh - 120px);
-  display:flex;
-  justify-content:center;
-  align-items:flex-start;
-  overflow:hidden;
-  background:#000;
-}
-
-.mapContent{
-  display:flex;
-  justify-content:center;
-  align-items:flex-start;
-}
-
-.map{
-  position:relative;
-}
-
-.mapImg{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  display:block;
-  user-select:none;
-  pointer-events:none; /* important: lets pan/zoom work smoothly */
-}
-
-/* ---------------- MOBILE IMPROVEMENTS ---------------- */
-@media (max-width: 900px){
-  .brand{
-    font-size:13px;
-    margin-bottom:6px;
-  }
-
-  .search{
-    flex: 1 1 100%;
-    min-width: 0;
-  }
-
-  .filterPill, .countsPill, .progressPill{
-    flex: 0 0 auto;
-  }
-
-  .actions{
-    flex: 1 1 100%;
-    min-width: 0;
-    overflow-x:auto; /* horizontal scroll for buttons */
-  }
-
-  .mapWrap{
-    height:calc(100vh - 160px);
-  }
-}  white-space: nowrap;
-}
-.filterBtn.on{
-  background: rgba(255,255,255,.18);
-  border-color: rgba(255,255,255,.24);
-}
-
-.countItem{ font-size: 12px; opacity: .92; white-space: nowrap; }
-.countDot{ opacity: .45; }
-.progressNum{ font-size: 12px; opacity: .9; white-space: nowrap; }
-.progressPct{ font-size: 12px; opacity: .75; margin-left: 6px; white-space: nowrap; }
-
-/* Top progress */
-.topProgress{
-  height: 3px;
-  background: rgba(255,255,255,.08);
-  border-radius: 999px;
-  overflow: hidden;
-}
-.topProgressFill{
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  background: #000;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   height: 100%;
-  background: rgba(255,255,255,.75);
 }
 
-/* Crumbs */
-.crumbRow{
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-.crumb{
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.12);
-  background: rgba(255,255,255,.06);
-  color: rgba(255,255,255,.9);
-  font-size: 12px;
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* ---------- MAP STAGE ---------- */
-/* If your topbar height changes, the JS uses TOPBAR_H=56.
-   This CSS now uses a safer larger top offset. */
-.mapWrap{
-  position: fixed;
-  top: 120px;               /* gives room for 2-3 wrapped rows */
-  left: 0; right: 0; bottom: 0;
+/* APP */
+.app {
+  height: 100vh;
   width: 100vw;
-  height: calc(100vh - 120px);
-
-  background: #000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
   overflow: hidden;
-  touch-action: none;
-}
-
-.mapContent{ display:block; }
-
-.map{
-  position: relative;
   background: #000;
 }
 
-.mapImg{
-  width: 100%;
-  height: 100%;
-  display: block;
-  user-select: none;
-  -webkit-user-drag: none;
-}
-
-.edges{
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-.linkLine{ opacity: .35; }
-.linkLine.t-overlap{ opacity: .25; }
-
-/* Hotspots */
-.hotspot{
-  position: absolute;
-  transform: translate(-50%, -50%);
-  border: 1px solid rgba(255,255,255,.18);
-  background: rgba(255,255,255,.10);
-  color: rgba(255,255,255,.95);
-  padding: 6px 8px;
-  border-radius: 999px;
-  font-size: 12px;
-  backdrop-filter: blur(6px);
-}
-.hotspot.read{ opacity: .55; }
-.hotspot.active{
-  background: rgba(255,255,255,.18);
-  border-color: rgba(255,255,255,.30);
-}
-.hotspotLabel{ white-space: nowrap; }
-
-/* Mobile dock */
-.fabDock{
+/* TOP BAR */
+.topbar {
   position: fixed;
-  left: 10px;
-  right: 10px;
-  bottom: 10px;
-  display: flex;
-  gap: 10px;
-  z-index: 40;
-}
-.fabAction{
-  flex: 1;
-  padding: 12px 12px;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,.12);
-  background: rgba(255,255,255,.06);
-  color: rgba(255,255,255,.95);
-  font-size: 13px;
-  line-height: 1.1;
-}
-.fabAction.primary{
-  background: rgba(255,255,255,.14);
-}
-.fabSub{
-  display: block;
-  font-size: 12px;
-  opacity: .7;
-  margin-top: 6px;
-}
-
-/* Resume chip */
-.resumeChip{
-  position: fixed;
-  right: 10px;
-  bottom: 70px;
-  z-index: 45;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #000;
+  border-bottom: 1px solid #111;
+  padding: 10px;
   display: flex;
   gap: 8px;
   align-items: center;
-  padding: 10px 12px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.12);
-  background: rgba(255,255,255,.06);
-  color: rgba(255,255,255,.95);
+  z-index: 1000;
+  overflow-x: auto;
 }
-.resumeChipK{ font-weight: 800; }
-.resumeChipT{
-  opacity: .8;
-  max-width: 220px;
-  overflow: hidden;
-  text-overflow: ellipsis;
+
+.brand {
+  font-size: 14px;
+  font-weight: 500;
   white-space: nowrap;
 }
 
-/* ---------- Small screens fine-tune ---------- */
-@media (max-width: 520px){
-  .actions{ justify-content: flex-start; }
-  .filterPill, .countsPill, .progressPill{
-    width: 100%;
-    justify-content: space-between;
-  }
-  .search{
-    flex: 1 1 100%;
-    width: 100%;
-  }
-  .mapWrap{
-    top: 150px;
-    height: calc(100vh - 150px);
-  }
+.search {
+  background: #111;
+  border: 1px solid #222;
+  color: #fff;
+  padding: 6px 10px;
+  font-size: 13px;
+  outline: none;
+  min-width: 140px;
 }
-/* ✅ MAP STAGE (this is the important part) */
+
+.search::placeholder {
+  color: #555;
+}
+
+/* MAP WRAPPER */
 .mapWrap {
-  position: fixed;
-  top: 56px;             /* leaves room for topbar */
-  left: 0;
-  right: 0;
-  bottom: 0;
+  height: 100vh;
   width: 100vw;
-  height: calc(100vh - 56px);
-
-  background: #000;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  overflow: hidden;      /* prevents page scroll */
-  touch-action: none;    /* prevents browser gesture conflicts */
 }
 
 .mapContent {
-  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* Map */
 .map {
   position: relative;
-  background: #000;
 }
 
 .mapImg {
   width: 100%;
-  height: 100%;
+  height: auto;
   display: block;
   user-select: none;
-  -webkit-user-drag: none;
-}
-
-.edges {
-  position: absolute;
-  inset: 0;
   pointer-events: none;
 }
 
-.linkLine {
-  opacity: .35;
-}
-.linkLine.t-overlap { opacity: .25; }
-
-/* Hotspots */
+/* HOTSPOTS */
 .hotspot {
   position: absolute;
   transform: translate(-50%, -50%);
-  border: 1px solid rgba(255,255,255,.18);
-  background: rgba(255,255,255,.08);
-  color: rgba(255,255,255,.95);
-  padding: 6px 8px;
-  border-radius: 999px;
-  font-size: 12px;
+  background: #fff;
+  color: #000;
+  border: none;
+  padding: 4px 6px;
+  font-size: 10px;
   cursor: pointer;
-  backdrop-filter: blur(4px);
+  transition: all 0.15s ease;
 }
-.hotspot.read { opacity: .55; }
-.hotspot.active {
-  background: rgba(255,255,255,.18);
-  border-color: rgba(255,255,255,.28);
-}
-.hotspotLabel { white-space: nowrap; }
 
-/* Mobile dock */
+.hotspot:active {
+  transform: translate(-50%, -50%) scale(0.92);
+  background: #ddd;
+}
+
+/* MOBILE BOTTOM DOCK */
 .fabDock {
   position: fixed;
-  left: 10px;
-  bottom: 10px;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  gap: 10px;
-  z-index: 40;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.85);
+  padding: 12px;
+  border: 1px solid #222;
+  backdrop-filter: blur(6px);
+  z-index: 999;
 }
+
+/* Buttons */
 .fabAction {
-  padding: 10px 12px;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,.12);
-  background: rgba(255,255,255,.06);
-  color: rgba(255,255,255,.95);
-}
-.fabAction.primary {
-  background: rgba(255,255,255,.14);
-}
-.fabSub {
-  display: block;
-  font-size: 12px;
-  opacity: .7;
+  background: #fff;
+  color: #000;
+  border: none;
+  padding: 12px 18px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.15s ease;
 }
 
-/* Resume chip */
-.resumeChip {
-  position: fixed;
-  right: 10px;
-  bottom: 10px;
-  z-index: 45;
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  padding: 10px 12px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.12);
-  background: rgba(255,255,255,.06);
-  color: rgba(255,255,255,.95);
-}
-.resumeChipK { font-weight: 800; }
-.resumeChipT { opacity: .8; max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }.progressNum{opacity:.9}
-.progressPct{opacity:.75}
-
-.actions{
-  display:flex;
-  flex-wrap:wrap;
-  gap:6px;
-}
-.ioBtn{
-  height:28px;
-  padding:0 10px;
-  border-radius:10px;
-  border:1px solid var(--border);
-  background:rgba(0,0,0,.18);
-  color:var(--text);
-  font-size:12px;
+.fabAction:active {
+  transform: scale(0.94);
+  background: #ddd;
 }
 
-.topProgress{
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:0;
-  height:2px;
-  background:rgba(255,255,255,.08);
-}
-.topProgressFill{
-  height:100%;
-  background:rgba(255,255,255,.55);
-  width:0%;
-}
-
-/* Breadcrumbs */
-.crumbRow{
-  width:100%;
-  display:flex;
-  gap:6px;
-  overflow:auto;
-  padding-top:4px;
-}
-.crumb{
-  border:1px solid var(--border);
-  background:rgba(0,0,0,.18);
-  color:rgba(255,255,255,.85);
-  height:26px;
-  padding:0 10px;
-  border-radius:999px;
-  font-size:12px;
-  white-space:nowrap;
-}
-
-/* ====== ZOOM/PAN AREA (THIS IS THE CENTER FIX) ====== */
-
-.mapWrap{
-  flex:1 1 auto;
-  width:100%;
-  height:100%;
-  overflow:hidden;
-
-  /* Ensure wrapper never adds padding/margins that shift right */
-  padding:0;
-  margin:0;
-
-  /* Center the transform viewport */
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  background:var(--bg);
-
-  /* Better touch behavior on mobile */
-  touch-action:none;
-}
-
-.mapContent{
-  /* react-zoom-pan-pinch content wrapper */
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:0;
-  margin:0;
-  transform-origin:0 0;
-}
-
-/* The actual map container */
-.map{
-  position:relative;
-  background:transparent;
-  padding:0;
-  margin:0;
-}
-
-/* Map image */
-.mapImg{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  display:block;
-  user-select:none;
-  -webkit-user-drag:none;
-}
-
-/* Edges */
-.edges{
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-}
-.linkLine{
-  stroke:rgba(255,255,255,.35);
-  vector-effect:non-scaling-stroke;
-}
-.linkLine.t-overlap{stroke:rgba(255,255,255,.28)}
-.linkLine.t-support{stroke:rgba(255,255,255,.45)}
-.linkLine.t-conflict{stroke:rgba(255,255,255,.25)}
-
-/* Hotspots */
-.hotspot{
-  position:absolute;
-  transform:translate(-50%,-50%);
-  border:1px solid rgba(255,255,255,.20);
-  background:rgba(0,0,0,.22);
-  color:rgba(255,255,255,.92);
-  border-radius:999px;
-  padding:5px 10px;
-  font-size:12px;
-  max-width:180px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  box-shadow:0 10px 25px rgba(0,0,0,.30);
-}
-.hotspot.read{
-  opacity:.72;
-  background:rgba(0,0,0,.16);
-}
-.hotspot.active{
-  border-color:rgba(255,255,255,.6);
-  background:rgba(255,255,255,.12);
-}
-.hotspotLabel{pointer-events:none}
-
-/* Resume chip */
-.resumeChip{
-  position:fixed;
-  right:12px;
-  bottom:78px;
-  z-index:30;
-  border:1px solid var(--border);
-  background:rgba(0,0,0,.22);
-  color:var(--text);
-  border-radius:999px;
-  padding:8px 12px;
-  display:flex;
-  gap:10px;
-  align-items:center;
-  max-width:70vw;
-  box-shadow:var(--shadow);
-}
-.resumeChipK{
-  opacity:.75;
-  font-size:12px;
-}
-.resumeChipT{
-  font-weight:700;
-  font-size:12px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-
-/* Mobile dock */
-.fabDock{
-  position:fixed;
-  left:10px;
-  bottom:10px;
-  z-index:25;
-  display:flex;
-  gap:8px;
-}
-.fabAction{
-  border:1px solid var(--border);
-  background:rgba(0,0,0,.22);
-  color:var(--text);
-  border-radius:14px;
-  padding:10px 12px;
-  font-size:12px;
-  display:flex;
-  flex-direction:column;
-  align-items:flex-start;
-  min-width:110px;
-}
-.fabAction.primary{
-  background:rgba(255,255,255,.10);
-}
-.fabAction.complete{
-  opacity:.75;
-}
-.fabSub{
-  opacity:.7;
-  font-size:11px;
-}
-
-/* Small screens: keep top bar compact */
-@media (max-width: 900px){
-  .topbar{gap:6px}
-  .actions{gap:5px}
-  .ioBtn{padding:0 8px}
-  .hotspot{font-size:11px; max-width:160px}
-}.map{
-  position:relative;
-  background:#000;
-}
-.mapImg{
-  width:100%;
-  height:100%;
-  object-fit:contain; /* critical for mobile */
-  display:block;
-}
-
-/* edges (hidden for now to keep map clean on mobile) */
-.edges{ position:absolute; inset:0; pointer-events:none; opacity:.20; }
-.linkLine{ stroke:#fff; opacity:.35; }
-
-/* hotspots */
-.hotspot{
-  position:absolute;
-  transform:translate(-50%,-50%);
-  background:#fff;
-  color:#000;
-  border:0;
-  border-radius:8px;
-  padding:8px 10px;
-  font-weight:700;
-  font-size:12px;
-  box-shadow: 0 6px 18px rgba(0,0,0,.45);
-  transition: transform .08s ease, filter .12s ease;
-}
-.hotspot:active{
-  transform:translate(-50%,-50%) scale(.98);
-  filter:brightness(.92);
-}
-.hotspot.read{
-  opacity:.55;
-}
-.hotspotLabel{ display:block; max-width:160px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-
-/* Bottom mobile dock */
-.fabDock{
-  position:fixed;
-  left:0;
-  right:0;
-  bottom:0;
-  z-index:60;
-  padding:10px;
-  display:flex;
-  gap:10px;
-  background:linear-gradient(to top, rgba(0,0,0,.92), rgba(0,0,0,.55));
-  border-top:1px solid var(--line);
-}
-
-.fabAction{
-  flex:1;
-  height:48px;
-  border-radius:12px;
-  border:1px solid var(--line);
-  background:var(--panel);
-  color:var(--text);
-  font-weight:800;
-}
-.fabAction.primary{
-  background:#fff;
-  color:#000;
-  border-color:#fff;
-}
-.fabSub{
-  display:block;
-  font-weight:600;
-  font-size:12px;
-  opacity:.75;
-}
-
-/* Make space so dock doesn't cover content */
-.app{
-  padding-bottom:70px;
-}
-
-/* Desktop enhancements */
-@media (min-width: 900px){
-  body{ overflow:auto; }
-  .actions{ display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; }
-  .ioBtn{
-    height:36px;
-    border-radius:10px;
-    border:1px solid var(--line);
-    background:#fff;
-    color:#000;
-    font-weight:800;
-    padding:0 12px;
+/* Make it mobile only */
+@media (min-width: 900px) {
+  .fabDock {
+    display: none;
   }
-  .fabDock{ display:none; }
-  .app{ padding-bottom:0; }
-}  display:none; /* hide heavy desktop actions on mobile */
-}
-
-/* progress bar under topbar */
-.topProgress{
-  margin-top:10px;
-  height:3px;
-  background:rgba(255,255,255,.10);
-  border-radius:999px;
-  overflow:hidden;
-}
-.topProgressFill{
-  height:100%;
-  background:#fff;
-  width:0%;
-}
-
-/* breadcrumbs */
-.crumbRow{
-  margin-top:10px;
-  display:flex;
-  gap:8px;
-  overflow:auto;
-  padding-bottom:2px;
-}
-.crumb{
-  white-space:nowrap;
-  border:1px solid var(--line);
-  background:var(--panel2);
-  color:var(--text);
-  border-radius:999px;
-  padding:8px 10px;
-  font-size:12px;
-}
-
-/* Map area */
-.mapWrap{
-  width:100%;
-  height:100%;
-  touch-action:none;
-}
-.mapContent{
-  width:100%;
-  height:100%;
-}
-.map{
-  position:relative;
-  background:#000;
-}
-.mapImg{
-  width:100%;
-  height:100%;
-  object-fit:contain; /* critical for mobile */
-  display:block;
-}
-
-/* edges (hidden for now to keep map clean on mobile) */
-.edges{ position:absolute; inset:0; pointer-events:none; opacity:.20; }
-.linkLine{ stroke:#fff; opacity:.35; }
-
-/* hotspots */
-.hotspot{
-  position:absolute;
-  transform:translate(-50%,-50%);
-  background:#fff;
-  color:#000;
-  border:0;
-  border-radius:8px;
-  padding:8px 10px;
-  font-weight:700;
-  font-size:12px;
-  box-shadow: 0 6px 18px rgba(0,0,0,.45);
-  transition: transform .08s ease, filter .12s ease;
-}
-.hotspot:active{
-  transform:translate(-50%,-50%) scale(.98);
-  filter:brightness(.92);
-}
-.hotspot.read{
-  opacity:.55;
-}
-.hotspotLabel{ display:block; max-width:160px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-
-/* Bottom mobile dock */
-.fabDock{
-  position:fixed;
-  left:0;
-  right:0;
-  bottom:0;
-  z-index:60;
-  padding:10px;
-  display:flex;
-  gap:10px;
-  background:linear-gradient(to top, rgba(0,0,0,.92), rgba(0,0,0,.55));
-  border-top:1px solid var(--line);
-}
-
-.fabAction{
-  flex:1;
-  height:48px;
-  border-radius:12px;
-  border:1px solid var(--line);
-  background:var(--panel);
-  color:var(--text);
-  font-weight:800;
-}
-.fabAction.primary{
-  background:#fff;
-  color:#000;
-  border-color:#fff;
-}
-.fabSub{
-  display:block;
-  font-weight:600;
-  font-size:12px;
-  opacity:.75;
-}
-
-/* Make space so dock doesn't cover content */
-.app{
-  padding-bottom:70px;
-}
-
-/* Desktop enhancements */
-@media (min-width: 900px){
-  body{ overflow:auto; }
-  .actions{ display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; }
-  .ioBtn{
-    height:36px;
-    border-radius:10px;
-    border:1px solid var(--line);
-    background:#fff;
-    color:#000;
-    font-weight:800;
-    padding:0 12px;
-  }
-  .fabDock{ display:none; }
-  .app{ padding-bottom:0; }
 }
