@@ -6,15 +6,12 @@ import { DEFAULT_EDGES, type Edge } from './data/edges';
 import { InfoPanel } from './components/InfoPanel';
 import { SearchSheet } from './components/SearchSheet';
 import { ResumeSheet } from './components/ResumeSheet';
-import SplashScreen from './components/SplashScreen';
 import { loadReadSet, markRead, clearRead } from './utils/readState';
 import { loadEdgesFromLocalStorage, saveEdgesToLocalStorage, exportGraph, importGraphFile } from './utils/graphIO';
 import { computeCredibilityScore } from './utils/credibility';
 import { loadLastVisited, saveLastVisited } from './utils/lastVisited';
 import { loadCrumbs, pushCrumb } from './utils/breadcrumbs';
 
-// Matches the dimensions of public/map.jpg (Great Awakening Map 2022)
-// Most labels are not yet position-mapped, so open topics via Search/List.
 const CONTENT_W = 1583;
 const CONTENT_H = 2048;
 
@@ -28,7 +25,9 @@ function Home() {
   const navigate = useNavigate();
   const nodes = DEFAULT_NODES;
 
-  const [edges, setEdges] = useState<Edge[]>(() => loadEdgesFromLocalStorage(DEFAULT_EDGES));
+  const [edges, setEdges] = useState<Edge[]>(() =>
+    loadEdgesFromLocalStorage(DEFAULT_EDGES)
+  );
   useEffect(() => saveEdgesToLocalStorage(edges), [edges]);
 
   const [readSet, setReadSet] = useState<Set<string>>(() => loadReadSet());
@@ -39,30 +38,57 @@ function Home() {
   const [sheetOpen, setSheetOpen] = useState(false);
 
   const [crumbs, setCrumbs] = useState<string[]>(() => loadCrumbs());
-  const [resumeId, setResumeId] = useState<string | null>(() => loadLastVisited());
-  const resumeNode = useMemo(() => (resumeId ? nodes.find((n) => n.id === resumeId) || null : null), [resumeId, nodes]);
+  const [resumeId, setResumeId] = useState<string | null>(() =>
+    loadLastVisited()
+  );
+
+  const resumeNode = useMemo(
+    () => (resumeId ? nodes.find((n) => n.id === resumeId) || null : null),
+    [resumeId, nodes]
+  );
+
   const [showResume, setShowResume] = useState(true);
   const [chipReady, setChipReady] = useState(true);
 
-  // auto-hide resume on mobile after 6s
+  // Viewport
+  const [vp, setVp] = useState({
+    w: window.innerWidth,
+    h: window.innerHeight,
+  });
+
   useEffect(() => {
-    if (!resumeNode) return;
-    const isMobile = window.matchMedia('(max-width: 900px)').matches;
-    if (!isMobile) return;
-    const t = window.setTimeout(() => {
-      setChipReady(false);
-      setShowResume(false);
-      window.setTimeout(() => setChipReady(true), 180);
-    }, 6000);
-    return () => window.clearTimeout(t);
-  }, [resumeNode]);
+    const onResize = () =>
+      setVp({ w: window.innerWidth, h: window.innerHeight });
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  // --- MOBILE FIT FIX ---
+  const chromeH = 160;
+
+  const fitScale = useMemo(() => {
+    const availW = vp.w;
+    const availH = Math.max(320, vp.h - chromeH);
+    return Math.min(availW / CONTENT_W, availH / CONTENT_H) * 0.98;
+  }, [vp]);
+
+  const initialPos = useMemo(() => {
+    const availH = Math.max(320, vp.h - chromeH);
+    const x = (vp.w - CONTENT_W * fitScale) / 2;
+    const y = (availH - CONTENT_H * fitScale) / 2;
+    return { x, y };
+  }, [vp, fitScale]);
 
   const filtered = useMemo(() => {
     let list = nodes;
-    if (readFilter === 'unread') list = list.filter((n) => !readSet.has(n.id));
-    if (readFilter === 'read') list = list.filter((n) => readSet.has(n.id));
+    if (readFilter === 'unread')
+      list = list.filter((n) => !readSet.has(n.id));
+    if (readFilter === 'read')
+      list = list.filter((n) => readSet.has(n.id));
+
     const q = query.trim().toLowerCase();
     if (!q) return list;
+
     return list.filter(
       (n) =>
         n.title.toLowerCase().includes(q) ||
@@ -71,26 +97,6 @@ function Home() {
     );
   }, [nodes, readFilter, readSet, query]);
 
-  const readCount = useMemo(() => nodes.reduce((a, n) => a + (readSet.has(n.id) ? 1 : 0), 0), [nodes, readSet]);
-  const unreadCount = useMemo(() => nodes.length - readCount, [nodes.length, readCount]);
-  const progressPct = useMemo(() => (nodes.length ? Math.round((readCount / nodes.length) * 100) : 0), [readCount, nodes.length]);
-
-  // track transform for nearest-unread
-  const [t, setT] = useState({ scale: 1, positionX: 0, positionY: 0 });
-  const [vp, setVp] = useState({ w: window.innerWidth, h: window.innerHeight });
-  useEffect(() => {
-    const onR = () => setVp({ w: window.innerWidth, h: window.innerHeight });
-    window.addEventListener('resize', onR);
-    return () => window.removeEventListener('resize', onR);
-  }, []);
-  const viewCenter = useMemo(() => {
-    const left = -t.positionX / t.scale;
-    const top = -t.positionY / t.scale;
-    const cx = left + vp.w / 2 / t.scale;
-    const cy = top + vp.h / 2 / t.scale;
-    return { cx, cy };
-  }, [t, vp]);
-
   const focusNode = (n: Node, openPanel = true) => {
     setSelected(n);
     setReadSet((prev) => markRead(prev, n.id));
@@ -98,6 +104,147 @@ function Home() {
     setResumeId(n.id);
     setCrumbs(pushCrumb(n.id));
     if (openPanel) navigate(`/topic/${n.id}`);
+  };
+
+  const clearSelection = () => {
+    setSelected(null);
+    navigate('/');
+  };
+
+  const cred = useMemo(
+    () => (selected ? computeCredibilityScore(selected.id, edges) : null),
+    [selected, edges]
+  );
+
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  return (
+    <div className="app">
+      <div className="topbar">
+        <div className="brand">Great Awakening Map</div>
+        <input
+          className="search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search topics..."
+        />
+      </div>
+
+      <TransformWrapper
+        initialScale={fitScale}
+        initialPositionX={initialPos.x}
+        initialPositionY={initialPos.y}
+        minScale={Math.min(0.2, fitScale)}
+        maxScale={8}
+        limitToBounds={false}
+        centerOnInit={false}
+        doubleClick={{ disabled: true }}
+        alignmentAnimation={{ disabled: true }}
+        velocityAnimation={{ disabled: true }}
+      >
+        <TransformComponent wrapperClass="mapWrap" contentClass="mapContent">
+          <div
+            className="map"
+            style={{ width: CONTENT_W, height: CONTENT_H }}
+          >
+            <img
+              className="mapImg"
+              src="/map.jpg"
+              alt="Map background"
+              draggable={false}
+            />
+
+            <svg
+              className="edges"
+              width={CONTENT_W}
+              height={CONTENT_H}
+            >
+              {edges.map((e) => {
+                const a = nodes.find((n) => n.id === e.from);
+                const b = nodes.find((n) => n.id === e.to);
+                if (!a || !b) return null;
+
+                return (
+                  <line
+                    key={e.id}
+                    x1={a.x * CONTENT_W}
+                    y1={a.y * CONTENT_H}
+                    x2={b.x * CONTENT_W}
+                    y2={b.y * CONTENT_H}
+                    strokeWidth="2"
+                    stroke="white"
+                  />
+                );
+              })}
+            </svg>
+
+            {filtered.map((n) => (
+              <button
+                key={n.id}
+                className="hotspot"
+                style={{
+                  left: `${n.x * 100}%`,
+                  top: `${n.y * 100}%`,
+                }}
+                onClick={() => focusNode(n, true)}
+              >
+                {n.title}
+              </button>
+            ))}
+          </div>
+        </TransformComponent>
+      </TransformWrapper>
+
+      <Routes>
+        <Route path="/" element={null} />
+        <Route
+          path="/topic/:id"
+          element={
+            <TopicRoute
+              nodes={nodes}
+              onSelect={setSelected}
+              onClose={clearSelection}
+            />
+          }
+        />
+      </Routes>
+
+      {selected && (
+        <InfoPanel
+          node={selected}
+          edges={edges}
+          cred={cred || undefined}
+          onClose={clearSelection}
+        />
+      )}
+    </div>
+  );
+}
+
+function TopicRoute({
+  nodes,
+  onSelect,
+  onClose,
+}: {
+  nodes: Node[];
+  onSelect: (n: Node | null) => void;
+  onClose: () => void;
+}) {
+  const { id } = useParams();
+
+  useEffect(() => {
+    if (!id) return;
+    const n = nodes.find((x) => x.id === id) || null;
+    onSelect(n);
+    if (!n) onClose();
+  }, [id]);
+
+  return null;
+}
+
+export default function App() {
+  return <Home />;
+}    if (openPanel) navigate(`/topic/${n.id}`);
   };
 
   const clearSelection = () => {
