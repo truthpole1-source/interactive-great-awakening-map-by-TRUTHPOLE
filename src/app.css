@@ -1,58 +1,238 @@
-:root { color-scheme: dark; }
-* { box-sizing: border-box; }
+/* ===== Truthpole: mobile-first black UI ===== */
 
-html, body, #root {
-  height: 100%;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  background: #000;
-  color: #fff;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+:root{
+  --bg: #000;
+  --panel: #0b0b0b;
+  --panel2:#101010;
+  --line:#1c1c1c;
+  --text:#fff;
+  --muted:#bdbdbd;
+  --chip:#121212;
+  --chipOn:#ffffff;
+  --chipOnText:#000000;
+  --shadow: 0 10px 30px rgba(0,0,0,.55);
 }
 
-a { color: inherit; }
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family: system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+  overflow:hidden; /* app manages scrolling */
+}
+#root{ height:100%; }
 
-button, input {
-  font: inherit;
-  color: inherit;
+/* App layout */
+.app{
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  background:var(--bg);
 }
 
-.app {
-  height: 100%;
-  width: 100%;
-  background: #000;
+/* Top bar */
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:50;
+  background:linear-gradient(to bottom, rgba(0,0,0,.92), rgba(0,0,0,.80));
+  border-bottom:1px solid var(--line);
+  padding:10px 10px 8px;
+  box-shadow: var(--shadow);
 }
 
-.topbar {
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  z-index: 50;
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  padding: 10px 12px;
-  background: rgba(0,0,0,0.75);
-  border-bottom: 1px solid rgba(255,255,255,0.15);
+.brand{
+  font-size:16px;
+  font-weight:600;
+  letter-spacing:.2px;
+  margin-bottom:8px;
 }
 
-.mapStage {
-  position: absolute;
-  inset: 0;
-  padding-top: 56px;
+.search{
+  width:100%;
+  height:38px;
+  border-radius:10px;
+  border:1px solid var(--line);
+  background:var(--panel);
+  color:var(--text);
+  padding:0 12px;
+  outline:none;
+}
+.search::placeholder{ color:rgba(255,255,255,.55); }
+
+/* Pills row (stack on mobile) */
+.filterPill, .countsPill, .progressPill{
+  margin-top:10px;
+  border:1px solid var(--line);
+  background:var(--panel);
+  border-radius:12px;
+  padding:6px;
+  display:flex;
+  align-items:center;
+  gap:6px;
 }
 
-.mapWrap {
-  width: 100vw;
-  height: calc(100vh - 56px);
-  overflow: hidden;
-  touch-action: none;
+.filterBtn{
+  flex:1;
+  height:34px;
+  border-radius:10px;
+  border:1px solid var(--line);
+  background:var(--chip);
+  color:var(--text);
+  font-weight:600;
+}
+.filterBtn.on{
+  background:var(--chipOn);
+  color:var(--chipOnText);
+  border-color:#fff;
 }
 
-.mapWrap img {
-  display: block;
-  max-width: none;
-  max-height: none;
+.countItem{ font-size:13px; color:var(--muted); }
+.countItem.emphasis{ color:var(--text); }
+.countDot{ color:rgba(255,255,255,.35); }
+
+.progressNum{ font-size:13px; color:var(--muted); }
+.progressPct{ margin-left:auto; font-weight:700; }
+
+.actions{
+  display:none; /* hide heavy desktop actions on mobile */
+}
+
+/* progress bar under topbar */
+.topProgress{
+  margin-top:10px;
+  height:3px;
+  background:rgba(255,255,255,.10);
+  border-radius:999px;
+  overflow:hidden;
+}
+.topProgressFill{
+  height:100%;
+  background:#fff;
+  width:0%;
+}
+
+/* breadcrumbs */
+.crumbRow{
+  margin-top:10px;
+  display:flex;
+  gap:8px;
+  overflow:auto;
+  padding-bottom:2px;
+}
+.crumb{
+  white-space:nowrap;
+  border:1px solid var(--line);
+  background:var(--panel2);
+  color:var(--text);
+  border-radius:999px;
+  padding:8px 10px;
+  font-size:12px;
+}
+
+/* Map area */
+.mapWrap{
+  width:100%;
+  height:100%;
+  touch-action:none;
+}
+.mapContent{
+  width:100%;
+  height:100%;
+}
+.map{
+  position:relative;
+  background:#000;
+}
+.mapImg{
+  width:100%;
+  height:100%;
+  object-fit:contain; /* critical for mobile */
+  display:block;
+}
+
+/* edges (hidden for now to keep map clean on mobile) */
+.edges{ position:absolute; inset:0; pointer-events:none; opacity:.20; }
+.linkLine{ stroke:#fff; opacity:.35; }
+
+/* hotspots */
+.hotspot{
+  position:absolute;
+  transform:translate(-50%,-50%);
+  background:#fff;
+  color:#000;
+  border:0;
+  border-radius:8px;
+  padding:8px 10px;
+  font-weight:700;
+  font-size:12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.45);
+  transition: transform .08s ease, filter .12s ease;
+}
+.hotspot:active{
+  transform:translate(-50%,-50%) scale(.98);
+  filter:brightness(.92);
+}
+.hotspot.read{
+  opacity:.55;
+}
+.hotspotLabel{ display:block; max-width:160px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+/* Bottom mobile dock */
+.fabDock{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  z-index:60;
+  padding:10px;
+  display:flex;
+  gap:10px;
+  background:linear-gradient(to top, rgba(0,0,0,.92), rgba(0,0,0,.55));
+  border-top:1px solid var(--line);
+}
+
+.fabAction{
+  flex:1;
+  height:48px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:var(--panel);
+  color:var(--text);
+  font-weight:800;
+}
+.fabAction.primary{
+  background:#fff;
+  color:#000;
+  border-color:#fff;
+}
+.fabSub{
+  display:block;
+  font-weight:600;
+  font-size:12px;
+  opacity:.75;
+}
+
+/* Make space so dock doesn't cover content */
+.app{
+  padding-bottom:70px;
+}
+
+/* Desktop enhancements */
+@media (min-width: 900px){
+  body{ overflow:auto; }
+  .actions{ display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; }
+  .ioBtn{
+    height:36px;
+    border-radius:10px;
+    border:1px solid var(--line);
+    background:#fff;
+    color:#000;
+    font-weight:800;
+    padding:0 12px;
+  }
+  .fabDock{ display:none; }
+  .app{ padding-bottom:0; }
 }
