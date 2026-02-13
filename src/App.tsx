@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Routes, Route, useNavigate, useParams } from 'react-router-dom';
-import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
+import { TransformComponent, TransformWrapper, type ReactZoomPanPinchRef } from 'react-zoom-pan-pinch';
 import { DEFAULT_NODES, type Node } from './data/nodes';
 import { DEFAULT_EDGES, type Edge } from './data/edges';
 import { InfoPanel } from './components/InfoPanel';
@@ -14,6 +14,7 @@ import { loadCrumbs, pushCrumb } from './utils/breadcrumbs';
 
 const CONTENT_W = 1583;
 const CONTENT_H = 2048;
+const TOPBAR_H = 56;
 
 function haptic(ms = 12) {
   try {
@@ -88,16 +89,229 @@ function Home() {
     navigate('/');
   };
 
-  // nearest-unread helpers (unchanged)
-  const [t, setT] = useState({ scale: 1, positionX: 0, positionY: 0 });
+  // ✅ viewport size for fit-to-screen
   const [vp, setVp] = useState({ w: window.innerWidth, h: window.innerHeight });
   useEffect(() => {
     const onR = () => setVp({ w: window.innerWidth, h: window.innerHeight });
     window.addEventListener('resize', onR);
     return () => window.removeEventListener('resize', onR);
   }, []);
-  const viewCenter = useMemo(() => {
-    const left = -t.positionX / t.scale;
+
+  // ✅ zoom-pan ref so we can center on init
+  const zref = useRef<ReactZoomPanPinchRef | null>(null);
+
+  // ✅ Fit + center once when mounted AND when viewport changes
+  useEffect(() => {
+    const api = zref.current;
+    if (!api) return;
+
+    const stageW = vp.w;
+    const stageH = vp.h - TOPBAR_H;
+
+    const scale = Math.min(stageW / CONTENT_W, stageH / CONTENT_H);
+    const x = (stageW - CONTENT_W * scale) / 2;
+    const y = (stageH - CONTENT_H * scale) / 2;
+
+    // setTransform(x, y, scale, animationTime, animationType)
+    api.setTransform(x, y, scale, 0);
+  }, [vp.w, vp.h]);
+
+  const cred = useMemo(() => (selected ? computeCredibilityScore(selected.id, edges) : null), [selected, edges]);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  return (
+    <div className="app">
+      <div className="topbar">
+        <div className="brand">Great Awakening Map</div>
+        <input className="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search topics..." />
+
+        <div className="filterPill" role="group" aria-label="Read filter">
+          {(['all', 'unread', 'read'] as const).map((v) => (
+            <button key={v} className={`filterBtn ${readFilter === v ? 'on' : ''}`} onClick={() => setReadFilter(v)}>
+              {v[0].toUpperCase() + v.slice(1)}
+            </button>
+          ))}
+        </div>
+
+        <div className="countsPill" title="Read / Unread">
+          <span className={`countItem read ${readFilter === 'read' ? 'emphasis' : ''}`}>Read {readCount}</span>
+          <span className="countDot">•</span>
+          <span className={`countItem unread ${readFilter === 'unread' ? 'emphasis' : ''}`}>Unread {unreadCount}</span>
+        </div>
+
+        <div className="progressPill" title="Read progress">
+          <span className="progressNum">{readCount}/{nodes.length}</span>
+          <span className="progressPct">{progressPct}%</span>
+        </div>
+
+        <div className="actions">
+          <button className="ioBtn" onClick={() => { haptic(10); setSheetOpen(true); }}>Find</button>
+          <button className="ioBtn" onClick={() => { haptic(12); continueNextUnread(nodes, filtered, readFilter, readSet, focusNode); }}>
+            {unreadCount === 0 ? 'Complete' : 'Continue'}
+          </button>
+          <button className="ioBtn" onClick={() => setReadSet(clearRead())}>Reset Read</button>
+          <button className="ioBtn" onClick={() => exportGraph(nodes, edges)}>Export</button>
+          <button className="ioBtn" onClick={() => fileInputRef.current?.click()}>Import</button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="application/json"
+            style={{ display: 'none' }}
+            onChange={async (e) => {
+              const f = e.target.files?.[0];
+              if (!f) return;
+              try {
+                const { edges: ie } = await importGraphFile(f);
+                setEdges(Array.isArray(ie) ? ie : edges);
+              } catch {}
+            }}
+          />
+        </div>
+
+        <div className="topProgress">
+          <div className="topProgressFill" style={{ width: `${progressPct}%` }} />
+        </div>
+
+        <div className="crumbRow">
+          {crumbs.map((id) => {
+            const n = nodes.find((x) => x.id === id);
+            if (!n) return null;
+            return (
+              <button key={id} className="crumb" onClick={() => focusNode(n, true)}>
+                {n.title}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {resumeNode ? (
+        <ResumeSheet
+          open={showResume}
+          title={resumeNode.title}
+          onJump={() => { haptic(10); focusNode(resumeNode, true); }}
+          onRequestClose={() => {
+            haptic(8);
+            setChipReady(false);
+            setShowResume(false);
+            window.setTimeout(() => setChipReady(true), 180);
+          }}
+        />
+      ) : null}
+
+      {!showResume && chipReady && resumeNode ? (
+        <button className="resumeChip" onClick={() => { haptic(10); setShowResume(true); }} aria-label="Show resume" title={`Resume: ${resumeNode.title}`}>
+          <span className="resumeChipK">Resume</span>
+          <span className="resumeChipT">{resumeNode.title}</span>
+        </button>
+      ) : null}
+
+      <TransformWrapper
+        ref={zref as any}
+        minScale={0.2}
+        maxScale={8}
+        initialScale={1}
+        limitToBounds={false}
+        centerOnInit={false}
+        doubleClick={{ disabled: true }}
+        panning={{ velocityDisabled: true }}
+        wheel={{ step: 0.12 }}
+      >
+        <TransformComponent wrapperClass="mapWrap" contentClass="mapContent">
+          <div className="map" style={{ width: CONTENT_W, height: CONTENT_H }}>
+            <img className="mapImg" src="/map.jpg" alt="Map background" draggable={false} />
+
+            <svg className="edges" width={CONTENT_W} height={CONTENT_H}>
+              {edges.map((e) => {
+                const a = nodes.find((n) => n.id === e.from);
+                const b = nodes.find((n) => n.id === e.to);
+                if (!a || !b) return null;
+                const x1 = a.x * CONTENT_W, y1 = a.y * CONTENT_H;
+                const x2 = b.x * CONTENT_W, y2 = b.y * CONTENT_H;
+                const sw = e.strength === 3 ? 2.6 : e.strength === 2 ? 2.0 : 1.4;
+                return <line key={e.id} x1={x1} y1={y1} x2={x2} y2={y2} className={`linkLine t-${e.type || 'overlap'}`} strokeWidth={sw} />;
+              })}
+            </svg>
+
+            {filtered.filter((n) => n.x >= 0 && n.y >= 0).map((n) => {
+              const left = n.x * 100;
+              const top = n.y * 100;
+              const isRead = readSet.has(n.id);
+              const isSel = selected?.id === n.id;
+              return (
+                <button
+                  key={n.id}
+                  className={`hotspot ${isSel ? 'active' : ''} ${isRead ? 'read' : ''}`}
+                  style={{ left: `${left}%`, top: `${top}%` }}
+                  onClick={() => { haptic(10); focusNode(n, true); }}
+                  aria-label={n.title}
+                >
+                  <span className="hotspotLabel">{n.title}</span>
+                </button>
+              );
+            })}
+          </div>
+        </TransformComponent>
+      </TransformWrapper>
+
+      <div className="fabDock" role="group" aria-label="Quick actions">
+        <button className={`fabAction primary ${unreadCount === 0 ? 'complete' : ''}`} onClick={() => continueNextUnread(nodes, filtered, readFilter, readSet, focusNode)} aria-label="Next unread topic">
+          Next unread
+          <span className="fabSub">Unread {unreadCount}</span>
+        </button>
+        <button className="fabAction" onClick={() => { haptic(10); setSheetOpen(true); }} aria-label="Find a topic">
+          Find
+        </button>
+      </div>
+
+      <SearchSheet
+        open={sheetOpen}
+        nodes={nodes}
+        readSet={readSet}
+        readFilter={readFilter}
+        onChangeReadFilter={setReadFilter}
+        onPick={(n) => { setSheetOpen(false); focusNode(n, true); }}
+        onClose={() => setSheetOpen(false)}
+      />
+
+      <Routes>
+        <Route path="/" element={null} />
+        <Route path="/topic/:id" element={<TopicRoute nodes={nodes} onSelect={setSelected} onClose={clearSelection} />} />
+      </Routes>
+
+      {selected ? <InfoPanel node={selected} edges={edges} cred={cred || undefined} onClose={clearSelection} /> : null}
+    </div>
+  );
+}
+
+function continueNextUnread(
+  nodes: Node[],
+  filtered: Node[],
+  readFilter: 'all' | 'unread' | 'read',
+  readSet: Set<string>,
+  focusNode: (n: Node, openPanel?: boolean) => void
+) {
+  const pool = readFilter === 'all' ? nodes : filtered;
+  const placedPool = pool.filter((n) => n.x >= 0 && n.y >= 0);
+  const unread = placedPool.filter((n) => !readSet.has(n.id));
+  if (!unread.length) return;
+  focusNode(unread[0], true);
+}
+
+function TopicRoute({ nodes, onSelect, onClose }: { nodes: Node[]; onSelect: (n: Node | null) => void; onClose: () => void }) {
+  const { id } = useParams();
+  useEffect(() => {
+    if (!id) return;
+    const n = nodes.find((x) => x.id === id) || null;
+    onSelect(n);
+    if (!n) onClose();
+  }, [id]);
+  return null;
+}
+
+export default function App() {
+  return <Home />;
+}    const left = -t.positionX / t.scale;
     const top = -t.positionY / t.scale;
     const cx = left + (vp.w / 2) / t.scale;
     const cy = top + (vp.h / 2) / t.scale;
