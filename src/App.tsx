@@ -20,7 +20,7 @@ import {
   importGraphFile,
 } from "./utils/graphIO";
 import { computeCredibilityScore } from "./utils/credibility";
-import { loadLastVisited, saveLastVisited } from "./utils/lastVisited";
+import { saveLastVisited } from "./utils/lastVisited";
 import { loadCrumbs, pushCrumb } from "./utils/breadcrumbs";
 
 import "./app.css";
@@ -49,22 +49,55 @@ function useViewport() {
   return vp;
 }
 
-/**
- * Ritual splash (phase 1 vibe)
- * - Removes "Enter the Grid"
- * - Uses ritual language + Truthpole logo
- */
+/** Ritual Splash: Hold-to-unlock (3s) */
 function Splash({ onEnter }: { onEnter: () => void }) {
-  const [fade, setFade] = useState(false);
+  const [holding, setHolding] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const holdRef = useRef<number | null>(null);
 
+  const HOLD_TIME = 3000;
+  const RING = 2 * Math.PI * 45; // circle circumference
+
+  const startHold = () => {
+    if (holding) return;
+    setHolding(true);
+
+    const start = Date.now();
+    holdRef.current = window.setInterval(() => {
+      const elapsed = Date.now() - start;
+      const pct = Math.min((elapsed / HOLD_TIME) * 100, 100);
+      setProgress(pct);
+
+      if (pct >= 100) {
+        if (holdRef.current) window.clearInterval(holdRef.current);
+        holdRef.current = null;
+        haptic(25);
+        // small “snap” delay feels powerful
+        window.setTimeout(onEnter, 180);
+      }
+    }, 16);
+  };
+
+  const cancelHold = () => {
+    setHolding(false);
+    setProgress(0);
+    if (holdRef.current) {
+      window.clearInterval(holdRef.current);
+      holdRef.current = null;
+    }
+  };
+
+  // prevent stuck interval if component unmounts
   useEffect(() => {
-    if (!fade) return;
-    const t = window.setTimeout(onEnter, 850);
-    return () => window.clearTimeout(t);
-  }, [fade, onEnter]);
+    return () => {
+      if (holdRef.current) window.clearInterval(holdRef.current);
+    };
+  }, []);
+
+  const dashOffset = RING - (progress / 100) * RING;
 
   return (
-    <div className={`splash ${fade ? "fade-out" : ""}`}>
+    <div className={`splash ${holding ? "is-holding" : ""}`}>
       <div className="ritual">
         <img
           className="ritualLogo"
@@ -73,125 +106,38 @@ function Splash({ onEnter }: { onEnter: () => void }) {
           draggable={false}
         />
 
-        <div className="ritualTitle">Ritual Entry</div>
-        <div className="ritualSub">Initiate the Great Awakening Map</div>
-
-        <button
-          className="ritualBtn"
-          onClick={() => {
-            haptic(18);
-            setFade(true);
-          }}
-        >
-          BEGIN THE RITUAL
-        </button>
-
-        <div className="ritualFine">Tap to proceed.</div>
-      </div>
-    </div>
-  );
-}
-
-/**
- * A clean “Resume last” toast/chip (replaces the unstyled Resume/Remote Viewing block)
- * Uses inline styles so it never looks broken even if CSS misses.
- */
-function ResumeToast({
-  title,
-  onResume,
-  onDismiss,
-}: {
-  title: string;
-  onResume: () => void;
-  onDismiss: () => void;
-}) {
-  return (
-    <div
-      style={{
-        position: "fixed",
-        left: 14,
-        bottom: DOCK_H + 14,
-        zIndex: 60,
-        maxWidth: "min(520px, calc(100vw - 28px))",
-        borderRadius: 18,
-        padding: 12,
-        background: "rgba(20,20,24,0.72)",
-        backdropFilter: "blur(14px)",
-        border: "1px solid rgba(255,255,255,0.10)",
-        boxShadow: "0 14px 50px rgba(0,0,0,0.45)",
-        color: "rgba(255,255,255,0.92)",
-      }}
-      role="region"
-      aria-label="Resume last visited"
-    >
-      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-        <img
-          src="/truthpole-logo.jpg"
-          alt=""
-          style={{
-            width: 34,
-            height: 34,
-            borderRadius: 12,
-            objectFit: "cover",
-            border: "1px solid rgba(255,255,255,0.12)",
-          }}
-        />
-
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: 12, opacity: 0.75, marginBottom: 2 }}>
-            Resume last
-          </div>
-          <div
-            style={{
-              fontSize: 14,
-              fontWeight: 650,
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
-            title={title}
-          >
-            {title}
-          </div>
+        <div className="ritualTitle">Great Awakening Map</div>
+        <div className="ritualSub">
+          {holding ? "Ritual unlocking…" : "Hold to initiate"}
         </div>
 
         <button
-          onClick={() => {
-            haptic(10);
-            onResume();
-          }}
-          style={{
-            border: "1px solid rgba(255,255,255,0.14)",
-            background: "rgba(255,255,255,0.06)",
-            color: "rgba(255,255,255,0.92)",
-            borderRadius: 14,
-            padding: "10px 12px",
-            fontWeight: 700,
-          }}
+          className="ritualBtn"
+          onMouseDown={startHold}
+          onMouseUp={cancelHold}
+          onMouseLeave={cancelHold}
+          onTouchStart={startHold}
+          onTouchEnd={cancelHold}
+          aria-label="Hold to initiate"
         >
-          Resume
+          <span className="ritualBtnText">INITIATE</span>
+
+          <svg className="progressRing" viewBox="0 0 100 100" aria-hidden="true">
+            <circle className="progressBg" cx="50" cy="50" r="45" />
+            <circle
+              className="progressBar"
+              cx="50"
+              cy="50"
+              r="45"
+              strokeDasharray={RING}
+              strokeDashoffset={dashOffset}
+            />
+          </svg>
         </button>
 
-        <button
-          onClick={() => {
-            haptic(8);
-            onDismiss();
-          }}
-          aria-label="Dismiss"
-          title="Dismiss"
-          style={{
-            border: "1px solid rgba(255,255,255,0.10)",
-            background: "transparent",
-            color: "rgba(255,255,255,0.70)",
-            borderRadius: 14,
-            width: 42,
-            height: 42,
-            fontSize: 18,
-            lineHeight: "42px",
-          }}
-        >
-          ×
-        </button>
+        <div className="ritualHint">
+          Release early to reset
+        </div>
       </div>
     </div>
   );
@@ -216,24 +162,6 @@ function Home() {
   const [sheetOpen, setSheetOpen] = useState(false);
 
   const [crumbs, setCrumbs] = useState<string[]>(() => loadCrumbs());
-  const [resumeId, setResumeId] = useState<string | null>(() => loadLastVisited());
-
-  const resumeNode = useMemo(
-    () => (resumeId ? nodes.find((n) => n.id === resumeId) || null : null),
-    [resumeId, nodes]
-  );
-
-  // Clean resume toast control (instead of ResumeSheet)
-  const [showResumeToast, setShowResumeToast] = useState(true);
-
-  // Auto-hide resume toast on mobile after 6s
-  useEffect(() => {
-    if (!resumeNode) return;
-    const isMobile = window.matchMedia("(max-width: 900px)").matches;
-    if (!isMobile) return;
-    const t = window.setTimeout(() => setShowResumeToast(false), 6000);
-    return () => window.clearTimeout(t);
-  }, [resumeNode]);
 
   const filtered = useMemo(() => {
     let list = nodes;
@@ -269,8 +197,8 @@ function Home() {
     const stageW = vp.w;
     const stageH = vp.h - TOPBAR_H - DOCK_H;
 
-    const cx = left + stageW / 2 / t.scale;
-    const cy = top + stageH / 2 / t.scale;
+    const cx = left + (stageW / 2) / t.scale;
+    const cy = top + (stageH / 2) / t.scale;
     return { cx, cy };
   }, [t, vp]);
 
@@ -278,7 +206,6 @@ function Home() {
     setSelected(n);
     setReadSet((prev) => markRead(prev, n.id));
     saveLastVisited(n.id);
-    setResumeId(n.id);
     setCrumbs((prev) => pushCrumb(n.id, prev));
     if (openPanel) navigate(`/topic/${n.id}`);
   };
@@ -357,16 +284,14 @@ function Home() {
     api.setTransform(x, y, scale, 250, "easeOut");
   };
 
-  // Center once on mount
   useEffect(() => {
-    const t = window.setTimeout(() => centerToFit(), 120);
-    return () => window.clearTimeout(t);
+    const tt = window.setTimeout(() => centerToFit(), 120);
+    return () => window.clearTimeout(tt);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div className="appShell">
-      {/* TOP BAR */}
       <header className="topbar">
         <div className="topbarRow">
           <div className="brandWrap">
@@ -461,16 +386,6 @@ function Home() {
         ) : null}
       </header>
 
-      {/* Clean Resume Toast */}
-      {resumeNode && showResumeToast ? (
-        <ResumeToast
-          title={resumeNode.title}
-          onResume={() => focusNode(resumeNode, true)}
-          onDismiss={() => setShowResumeToast(false)}
-        />
-      ) : null}
-
-      {/* MAP */}
       <main className="stage">
         <TransformWrapper
           ref={zref as any}
@@ -496,7 +411,6 @@ function Home() {
             <div className="map" style={{ width: CONTENT_W, height: CONTENT_H }}>
               <img className="mapImg" src="/map.jpg" alt="Map background" draggable={false} />
 
-              {/* Edges */}
               <svg className="edges" width={CONTENT_W} height={CONTENT_H}>
                 {edges.map((e) => {
                   const a = nodes.find((n) => n.id === e.from);
@@ -524,7 +438,6 @@ function Home() {
                 })}
               </svg>
 
-              {/* Hotspots */}
               {filtered.filter((n) => n.x >= 0 && n.y >= 0).map((n) => {
                 const left = n.x * 100;
                 const top = n.y * 100;
@@ -551,7 +464,6 @@ function Home() {
         </TransformWrapper>
       </main>
 
-      {/* MOBILE DOCK */}
       <div className="dock" role="group" aria-label="Quick actions">
         <button
           className="dockBtn"
@@ -607,9 +519,6 @@ function Home() {
   );
 }
 
-/**
- * ✅ Fixed typing: only accept what we actually use
- */
 function TopicRoute({
   nodes,
   onSelect,
@@ -626,7 +535,7 @@ function TopicRoute({
     const n = nodes.find((x) => x.id === id) || null;
     onSelect(n);
     if (!n) onClose();
-  }, [id, nodes, onSelect, onClose]);
+  }, [id]);
 
   return null;
 }
@@ -652,4 +561,4 @@ export default function App() {
       )}
     </div>
   );
-}
+      }
